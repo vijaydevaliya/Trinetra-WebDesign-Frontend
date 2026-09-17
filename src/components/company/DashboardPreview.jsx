@@ -71,13 +71,13 @@ export const DashboardPreview = () => {
       </div>
 
       {/* Interactive Animated Metric Visualization */}
-      <div className="p-6 rounded-2xl bg-navy-900 text-white border border-brand-500/20 space-y-4">
+      <div className="p-6 rounded-2xl bg-brand-50 dark:bg-navy-900 text-navy-900 dark:text-white border border-brand-500/20 space-y-4">
         <div className="flex items-center justify-between">
-          <h4 className="text-sm font-bold text-brand-200 flex items-center gap-2">
-            <Activity className="w-4 h-4 text-brand-400" />
+          <h4 className="text-sm font-bold text-navy-800 dark:text-brand-200 flex items-center gap-2">
+            <Activity className="w-4 h-4 text-brand-500 dark:text-brand-400" />
             <span>Monthly Maintenance Collection Breakdown</span>
           </h4>
-          <span className="text-xs px-2.5 py-1 rounded-full bg-brand-500/20 text-brand-300 font-mono">
+          <span className="text-xs px-2.5 py-1 rounded-full bg-brand-500/20 text-brand-600 dark:text-brand-300 font-mono">
             Auto-Reconciled
           </span>
         </div>
@@ -92,10 +92,10 @@ export const DashboardPreview = () => {
           ].map((bar, idx) => (
             <div key={idx} className="space-y-1">
               <div className="flex justify-between text-xs font-medium">
-                <span className="text-brand-100">{bar.label}</span>
-                <span className="text-brand-400 font-semibold">{bar.amount} ({bar.pct}%)</span>
+                <span className="text-navy-700 dark:text-brand-100">{bar.label}</span>
+                <span className="text-brand-600 dark:text-brand-400 font-semibold">{bar.amount} ({bar.pct}%)</span>
               </div>
-              <div className="w-full h-2.5 bg-navy-950 rounded-full overflow-hidden">
+              <div className="w-full h-2.5 bg-brand-100 dark:bg-navy-950 rounded-full overflow-hidden">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${bar.pct}%` }}

@@ -19,7 +19,7 @@ export const Loader = () => {
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, transition: { duration: 0.4 } }}
-          className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-navy-950 text-white"
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-brand-50 dark:bg-navy-950 text-navy-900 dark:text-white"
         >
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
@@ -30,7 +30,7 @@ export const Loader = () => {
             <LogoPlate logo="trinetra" size="xl" />
           </motion.div>
 
-          <div className="w-48 h-1 bg-navy-800 rounded-full overflow-hidden relative">
+          <div className="w-48 h-1 bg-brand-100 dark:bg-navy-800 rounded-full overflow-hidden relative">
             <motion.div
               initial={{ x: '-100%' }}
               animate={{ x: '0%' }}

@@ -12,7 +12,7 @@ export const NotFound = () => {
         <title>404 — Page Not Found | Trinetra Technoworld Group</title>
       </Helmet>
 
-      <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-navy-950 text-white text-center">
+      <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-brand-50 dark:bg-navy-950 text-navy-900 dark:text-white text-center">
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -25,11 +25,11 @@ export const NotFound = () => {
             404
           </h1>
 
-          <h2 className="text-2xl font-bold text-white">
+          <h2 className="text-2xl font-bold text-navy-950 dark:text-white">
             Page Not Found
           </h2>
 
-          <p className="text-sm text-brand-200/80 leading-relaxed">
+          <p className="text-sm text-navy-600 dark:text-brand-200/80 leading-relaxed">
             The page or resource you are looking for has moved or does not exist in the Trinetra Technoworld directory.
           </p>
 

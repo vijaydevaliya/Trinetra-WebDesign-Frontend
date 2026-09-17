@@ -9,9 +9,9 @@ export const PARENT_COMPANY = {
   established: 2018,
   stats: [
     { label: 'Subsidiaries', value: 3, suffix: '' },
-    { label: 'Projects Delivered', value: 1250, suffix: '+' },
-    { label: 'Cities Served', value: 45, suffix: '+' },
-    { label: 'Years of Expertise', value: 8, suffix: '+' }
+    { label: 'Projects Delivered', value: 2756, suffix: '+' },
+    { label: 'Cities Served', value: 10, suffix: '+' },
+    { label: 'Years of Expertise', value: 10, suffix: '+' }
   ]
 };
 

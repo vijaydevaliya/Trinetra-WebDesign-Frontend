@@ -6,6 +6,11 @@ const LOGO_MAP = {
     alt: 'Trinetra Technoworld Pvt Ltd',
     title: 'TRINETRA TECHNOWORLD'
   },
+  'trinetra-full': {
+    src: '/logos/section_logo.png',
+    alt: 'Trinetra Technoworld Pvt Ltd',
+    title: 'TRINETRA TECHNOWORLD'
+  },
   vasuki: {
     src: '/logos/vasuki-transparent.png',
     alt: 'Vasuki by Trinetra',
@@ -32,19 +37,22 @@ const SIZE_CLASSES = {
 };
 
 const IMG_HEIGHTS = {
-  sm: 'max-h-7 sm:max-h-8 max-w-[130px]',
+  sm: 'max-h-7 sm:max-h-8 max-w-[180px]',
   md: 'max-h-10 sm:max-h-12 max-w-[200px]',
   lg: 'max-h-14 sm:max-h-18 max-w-[270px]',
   xl: 'max-h-20 sm:max-h-28 max-w-[340px] sm:max-w-[440px]',
   '2xl': 'max-h-28 sm:max-h-40 md:max-h-48 max-w-[400px] sm:max-w-[550px]'
 };
 
-export const LogoPlate = ({ logo = 'trinetra', size = 'md', className = '', onClick }) => {
+export const LogoPlate = ({ logo = 'trinetra', size = 'md', className = '', onClick, forceGlow = false }) => {
   const [imgError, setImgError] = useState(false);
   const logoInfo = LOGO_MAP[logo] || LOGO_MAP.trinetra;
 
   const sizeClass = SIZE_CLASSES[size] || SIZE_CLASSES.md;
   const imgHeight = IMG_HEIGHTS[size] || IMG_HEIGHTS.md;
+  const glowClasses = forceGlow
+    ? 'drop-shadow-[0_0_16px_rgba(79,192,232,0.65)] brightness-110'
+    : 'dark:drop-shadow-[0_0_16px_rgba(79,192,232,0.65)] dark:brightness-110';
 
   return (
     <div
@@ -56,7 +64,7 @@ export const LogoPlate = ({ logo = 'trinetra', size = 'md', className = '', onCl
           src={logoInfo.src}
           alt={logoInfo.alt}
           onError={() => setImgError(true)}
-          className={`object-contain ${imgHeight} w-auto transition-all duration-300 group-hover:scale-105 filter drop-shadow-[0_0_16px_rgba(79,192,232,0.65)] brightness-110`}
+          className={`object-contain ${imgHeight} w-auto transition-all duration-300 group-hover:scale-105 filter ${glowClasses}`}
           loading="eager"
         />
       ) : (

@@ -45,16 +45,12 @@ const CHILDREN = SUBSIDIARIES.map((sub, i) => ({
 
 /* ---------------------------------------------------------------- timeline */
 const T_BANG = 1.5;
-const D_SHAKE = 1; // camera shake for 1s right before the blast
-const T_SHAKE = T_BANG - D_SHAKE;
 const T_THROW = 1.9;
 const D_THROW = 1.15;
 const ORBIT_PERIOD = 30;
 const T_SETTLE = T_THROW + D_THROW + 0.15; // children stop moving once they land from the blast
-const T_LIGHTNING = T_SETTLE + 0.1; // triangle circuit "energises" once children are static
-
-/* the 3 children connect pairwise into a triangle: 0-1, 1-2, 2-0 */
-const EDGE_PAIRS = [[0, 1], [1, 2], [2, 0]];
+const T_LIGHTNING = T_SETTLE + 0.1; // hub-and-spoke circuit energises once children are static
+const T_TEXT_START = T_BANG + 0.55; // company name text blast begins
 
 /* -------------------------------------------------------------------- math */
 const clamp01 = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
@@ -172,6 +168,8 @@ function Mark({ src, lines, tint, fontSize, onAspect, iconOnly = false }) {
 
 /* ==================================================================== HERO */
 export const OrbitHero = () => {
+  const line1Ref = useRef(null);
+  const line2Ref = useRef(null);
   const wrapRef = useRef(null);
   const stageRef = useRef(null);
   const canvasRef = useRef(null);
@@ -230,6 +228,7 @@ export const OrbitHero = () => {
     if (!wrap || !cvs) return;
     const ctx = cvs.getContext('2d');
     const s = S.current;
+    s.textLightning = [];
 
     const seed = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -261,6 +260,8 @@ export const OrbitHero = () => {
       s.rings = [];
       s.bangDone = false;
       s.lightning = null;
+      s.textLightning = [];
+      s.shakeAmp = 0;
     };
 
     const bang = () => {
@@ -314,11 +315,6 @@ export const OrbitHero = () => {
             };
           })
         : null;
-
-      /* ---------------------------------------------------- camera shake (disabled) */
-      if (stageRef.current && stageRef.current.style.transform) {
-        stageRef.current.style.transform = '';
-      }
 
       /* ------------------------------------------------------ background */
       ctx.clearRect(0, 0, s.W, s.H);
@@ -403,14 +399,16 @@ export const OrbitHero = () => {
         ctx.fillRect(0, 0, s.W, s.H);
       }
 
-      /* ------------------------------------- triangle lightning circuit */
+      /* --------------------------------- hub-and-spoke lightning circuit */
       if (childPos && t >= T_LIGHTNING) {
         if (!s.lightning) {
-          s.lightning = EDGE_PAIRS.map(() => ({ nextAt: t, strikeAt: -10, duration: 0.3, points: null }));
+          s.lightning = CHILDREN.map(() => ({ nextAt: t, strikeAt: -10, duration: 0.3, points: null, shakeAmp: 0 }));
         }
-        EDGE_PAIRS.forEach(([ia, ib], i) => {
-          const A = childPos[ia], B = childPos[ib];
+        CHILDREN.forEach((_, i) => {
+          const A = { x: cx, y: cy }, B = childPos[i];
           const e = s.lightning[i];
+
+          e.shakeAmp = Math.max(0, (e.shakeAmp || 0) - dt * 34);
 
           if (!reduced && t >= e.nextAt) {
             const isIgnition = e.strikeAt < 0;
@@ -418,6 +416,7 @@ export const OrbitHero = () => {
             e.strikeAt = t;
             e.duration = isIgnition ? 0.4 : 0.15 + Math.random() * 0.12;
             e.nextAt = t + e.duration + 0.9 + Math.random() * 2.1;
+            e.shakeAmp = Math.min(12, e.shakeAmp + (isIgnition ? 8 : 4.5));
           }
 
           if (!reduced && e.points) {
@@ -428,6 +427,77 @@ export const OrbitHero = () => {
             }
           }
         });
+      }
+
+      /* ----------------------------------------- text lightning on letters */
+      if (!reduced && t >= T_TEXT_START) {
+        const line1El = line1Ref.current;
+        const line2El = line2Ref.current;
+        const wrapRect = wrap.getBoundingClientRect();
+        const collectPos = (el) => {
+          if (!el) return [];
+          return Array.from(el.querySelectorAll('.tw-letter')).map(span => {
+            const r = span.getBoundingClientRect();
+            return { x: r.left - wrapRect.left + r.width / 2, y: r.top - wrapRect.top + r.height * 0.12 };
+          });
+        };
+        const allPos = [...collectPos(line1El), ...collectPos(line2El)];
+        if (s.textLightning.length === 0 && allPos.length > 0) {
+          s.textLightning = allPos.map((pos, i) => ({
+            x: pos.x, y: pos.y,
+            nextAt: T_TEXT_START + i * 0.058,
+            strikeAt: -10, duration: 0.28,
+            points: null, color: [C.cyan, '#c0eeff', C.sky][i % 3],
+            phase: 'ignition',
+          }));
+        } else {
+          allPos.forEach((pos, i) => { if (s.textLightning[i]) { s.textLightning[i].x = pos.x; s.textLightning[i].y = pos.y; } });
+        }
+        for (const lt of s.textLightning) {
+          if (t >= lt.nextAt && (lt.phase === 'ignition' || lt.points === null)) {
+            lt.points = boltPoints(lt.x, lt.y - 90, lt.x, lt.y, 24);
+            lt.strikeAt = t;
+            lt.duration = lt.phase === 'ignition' ? 0.40 : 0.2 + Math.random() * 0.12;
+            lt.nextAt = t + lt.duration + 2.8 + Math.random() * 4.2;
+            lt.phase = 'idle';
+          }
+          if (lt.points) {
+            const life = t - lt.strikeAt;
+            if (life >= 0 && life < lt.duration) {
+              const fade = 1 - life / lt.duration;
+              ctx.save();
+              // bloom glow
+              ctx.globalAlpha = fade * 0.42;
+              ctx.strokeStyle = lt.color; ctx.shadowColor = lt.color; ctx.shadowBlur = 38;
+              ctx.lineWidth = 3.0 * fade;
+              ctx.beginPath(); ctx.moveTo(lt.points[0].x, lt.points[0].y);
+              for (let pi = 1; pi < lt.points.length; pi++) ctx.lineTo(lt.points[pi].x, lt.points[pi].y);
+              ctx.stroke();
+              // mid
+              ctx.globalAlpha = fade * 0.78;
+              ctx.shadowBlur = 16; ctx.lineWidth = 1.4 * fade;
+              ctx.stroke();
+              // bright core
+              ctx.globalAlpha = fade;
+              ctx.strokeStyle = 'rgba(255,255,255,0.96)'; ctx.shadowBlur = 5; ctx.lineWidth = 0.5;
+              ctx.beginPath(); ctx.moveTo(lt.points[0].x, lt.points[0].y);
+              for (let pi = 1; pi < lt.points.length; pi++) ctx.lineTo(lt.points[pi].x, lt.points[pi].y);
+              ctx.stroke();
+              // sparks at target letter
+              for (let si = 0; si < 6; si++) {
+                const ang = (si / 6) * Math.PI * 2 + Math.random() * 0.8;
+                const len = 7 + Math.random() * 12;
+                ctx.globalAlpha = fade * 0.75;
+                ctx.strokeStyle = lt.color; ctx.shadowColor = lt.color; ctx.shadowBlur = 12;
+                ctx.lineWidth = 0.8;
+                ctx.beginPath(); ctx.moveTo(lt.x, lt.y);
+                ctx.lineTo(lt.x + Math.cos(ang) * len, lt.y + Math.sin(ang) * len);
+                ctx.stroke();
+              }
+              ctx.restore();
+            }
+          }
+        }
       }
 
       /* --------------------------------------- parent mark, truly centred */
@@ -456,9 +526,12 @@ export const OrbitHero = () => {
         const y = cy + Math.sin(ang) * Ry * orbitReach;
         const depth = childPos ? childPos[i].depth : (Math.sin(ang) + 1) / 2; // 0 far · 1 near
         const sc = (0.76 + depth * 0.36) * (0.35 + 0.65 * easeOutCubic(orbitK));
+        const shakeAmp = s.lightning?.[i]?.shakeAmp || 0;
+        const jx = shakeAmp > 0.05 ? (Math.random() - 0.5) * shakeAmp : 0;
+        const jy = shakeAmp > 0.05 ? (Math.random() - 0.5) * shakeAmp : 0;
         el.style.width = plateW + 'px';
         el.style.height = plateH + 'px';
-        el.style.transform = `translate3d(${x - plateW / 2}px, ${y - plateH / 2}px, 0) scale(${sc})`;
+        el.style.transform = `translate3d(${x - plateW / 2 + jx}px, ${y - plateH / 2 + jy}px, 0) scale(${sc})`;
         el.style.opacity = clamp01((t - T_THROW) / 0.4) * (0.62 + depth * 0.38);
         el.style.zIndex = depth > 0.5 ? 9 : 2;
         el.style.filter = `blur(${(1 - depth) * 1.1}px)`;
@@ -488,16 +561,40 @@ export const OrbitHero = () => {
       }}
     >
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,700;0,900;1,900&display=swap');
         @keyframes tw-rise { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:none} }
         @keyframes tw-spin { to { transform: rotate(360deg) } }
         @keyframes tw-spin-r { to { transform: rotate(-360deg) } }
         @keyframes tw-blink { 0%,100%{opacity:.25} 50%{opacity:.9} }
+        @keyframes tw-letter-blast {
+          0%   { opacity:0; transform:scale(0.18) translateY(52px); filter:blur(20px); }
+          55%  { opacity:1; transform:scale(1.25) translateY(-9px); filter:blur(0); }
+          75%  { transform:scale(0.93) translateY(4px); }
+          100% { opacity:1; transform:scale(1) translateY(0); filter:blur(0); }
+        }
+        @keyframes tw-letter-glow {
+          0%,100% { filter:drop-shadow(0 0 10px rgba(103,223,232,.45)) drop-shadow(0 0 30px rgba(63,154,218,.2)); }
+          50%     { filter:drop-shadow(0 0 28px rgba(103,223,232,1)) drop-shadow(0 0 70px rgba(63,154,218,.75)) drop-shadow(0 0 110px rgba(27,95,191,.45)); }
+        }
+        @keyframes tw-line2-blast {
+          0%   { opacity:0; transform:translateY(22px); letter-spacing:1.1em; }
+          100% { opacity:1; transform:translateY(0); letter-spacing:0.38em; }
+        }
+        @keyframes tw-glowline { from{transform:scaleX(0);opacity:0} to{transform:scaleX(1);opacity:1} }
+        @keyframes tw-badge { from{opacity:0;transform:translateY(-10px) scale(0.85)} to{opacity:1;transform:none} }
+        @keyframes tw-dot { 0%,100%{transform:scale(1);box-shadow:0 0 6px #67DFE8} 50%{transform:scale(1.6);box-shadow:0 0 16px #67DFE8,0 0 32px #3F9ADA} }
         .tw-rise{ animation: tw-rise .9s cubic-bezier(.2,.7,.2,1) both }
         .tw-plate{ transition: box-shadow .35s ease, border-color .35s ease }
         .tw-orb:hover .tw-plate{ border-color: rgba(103,223,232,.55); box-shadow: 0 0 70px -10px currentColor }
         .tw-orb:hover .tw-label{ opacity:1; letter-spacing:.42em }
+        .tw-name-line1 .tw-letter { animation: tw-letter-blast .72s cubic-bezier(.17,.89,.32,1.28) both, tw-letter-glow 3.8s ease-in-out 0.5s infinite; }
+        .tw-name-line2 { animation: tw-line2-blast 1s cubic-bezier(.2,.8,.2,1) both; }
+        .tw-glowline   { animation: tw-glowline 1.4s cubic-bezier(.2,.8,.2,1) both; }
+        .tw-badge-el   { animation: tw-badge .7s cubic-bezier(.2,.8,.2,1) both; }
+        .tw-dot        { animation: tw-dot 1.6s ease-in-out infinite; }
         @media (prefers-reduced-motion: reduce){
           .tw-rise{animation:none} [data-ring]{animation:none !important}
+          .tw-name-line1 .tw-letter,.tw-name-line2,.tw-glowline,.tw-badge-el{animation:none;opacity:1;}
         }
       `}</style>
 
@@ -590,28 +687,104 @@ export const OrbitHero = () => {
         ))}
       </div>
 
-      {/* ------------------------------------------------------- type deck */}
+      {/* ===== BIG BANG COMPANY NAME TEXT OVERLAY — bottom-center ===== */}
       <div style={{
-        position: 'absolute', left: 0, right: 0, top: 'clamp(34px,6.5vh,92px)',
-        zIndex: 6, textAlign: 'center', padding: '0 24px', pointerEvents: 'none',
+        position: 'absolute', inset: 0, zIndex: 10,
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end',
+        pointerEvents: 'none', padding: '0 24px clamp(64px,10vh,100px)',
       }}>
-        <p className="tw-rise" style={{
-          animationDelay: `${T_BANG + 0.5}s`, margin: 0,
-          fontSize: 'clamp(9px,.75vw,11px)', letterSpacing: '.52em',
-          textTransform: 'uppercase', color: 'rgba(103,223,232,.75)',
-        }}>One core · three worlds</p>
+
+        {/* Eyebrow badge */}
+        <div className="tw-badge-el" style={{
+          animationDelay: `${T_BANG + 0.22}s`,
+          marginBottom: 'clamp(6px,1vh,12px)',
+          display: 'inline-flex', alignItems: 'center', gap: '9px',
+          padding: '4px 14px', borderRadius: '100px',
+          border: '1px solid rgba(103,223,232,0.28)',
+          background: 'rgba(103,223,232,0.06)', backdropFilter: 'blur(8px)',
+          fontSize: 'clamp(7px,0.55vw,9px)', letterSpacing: '0.5em',
+          textTransform: 'uppercase', color: 'rgba(103,223,232,0.85)', opacity: 0,
+        }}>
+          <span className="tw-dot" style={{
+            display: 'inline-block', width: 5, height: 5, borderRadius: '50%',
+            background: '#67DFE8', flexShrink: 0,
+          }} />
+          One Vision· Three Worlds
+        </div>
+
+        {/* LINE 1 — TRINETRA letter-by-letter Big Bang blast */}
+        <div
+          ref={line1Ref}
+          className="tw-name-line1"
+          aria-label="TRINETRA"
+          style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 'clamp(24px,4.2vw,62px)',
+            fontWeight: 900, fontStyle: 'italic',
+            fontFamily: "'Barlow',ui-sans-serif,system-ui,sans-serif",
+            letterSpacing: 'clamp(0.1em,0.2em,0.28em)',
+            textTransform: 'uppercase', lineHeight: 1,
+            userSelect: 'none',
+          }}
+        >
+          {'TRINETRA'.split('').map((ch, i) => (
+            <span key={i} className="tw-letter" style={{
+              display: 'inline-block',
+              animationDelay: `${T_BANG + 0.04 + i * 0.075}s`,
+              opacity: 0,
+              color: 'transparent',
+              backgroundImage: `linear-gradient(155deg,#67DFE8 0%,#ffffff 28%,#3F9ADA 58%,#1B5FBF 100%)`,
+              WebkitBackgroundClip: 'text', backgroundClip: 'text',
+            }}>{ch}</span>
+          ))}
+        </div>
+
+        {/* Glowing divider line */}
+        <div style={{ position: 'relative', width: 'clamp(120px,18vw,280px)', height: 1, margin: 'clamp(5px,0.8vh,10px) 0' }}>
+          <div className="tw-glowline" style={{
+            animationDelay: `${T_BANG + 0.82}s`,
+            position: 'absolute', inset: 0, transformOrigin: 'center',
+            background: 'linear-gradient(90deg,transparent,#67DFE8,#ffffff,#67DFE8,transparent)',
+            boxShadow: '0 0 10px 2px rgba(103,223,232,0.6),0 0 28px 4px rgba(63,154,218,0.3)',
+            borderRadius: 2, opacity: 0,
+          }} />
+        </div>
+
+        {/* LINE 2 — TECHNOWORLD PVT LTD */}
+        <div
+          ref={line2Ref}
+          className="tw-name-line2"
+          aria-label="TECHNOWORLD PVT LTD"
+          style={{
+            animationDelay: `${T_BANG + 0.72}s`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontFamily: "'Barlow',ui-sans-serif,system-ui,sans-serif",
+            fontSize: 'clamp(8px,1vw,14px)',
+            fontWeight: 300, letterSpacing: 'clamp(0.28em,0.38em,0.5em)',
+            textTransform: 'uppercase', lineHeight: 1,
+            color: 'rgba(232,244,250,0.70)', opacity: 0, userSelect: 'none',
+          }}
+        >
+          {'TECHNOWORLD PVT LTD'.split('').map((ch, i) => (
+            <span key={i} className="tw-letter" style={{
+              display: 'inline-block',
+              whiteSpace: ch === ' ' ? 'pre' : 'normal',
+            }}>
+              {ch === ' ' ? '\u00A0' : ch}
+            </span>
+          ))}
+        </div>
       </div>
 
-      <div style={{
-        position: 'absolute', left: 0, right: 0, bottom: 'clamp(30px,5.5vh,68px)',
-        zIndex: 6, textAlign: 'center', padding: '0 24px',
-      }}>
-        <p style={{
-          margin: '26px 0 0', fontSize: 9, letterSpacing: '.46em',
-          textTransform: 'uppercase', color: 'rgba(232,244,250,.35)',
-          animation: 'tw-blink 2.8s ease-in-out infinite',
-        }}>Scroll to explore</p>
-      </div>
+      {/* Scroll hint */}
+      <p style={{
+        position: 'absolute', left: '50%', bottom: 'clamp(28px,5vh,64px)',
+        transform: 'translateX(-50%)',
+        margin: 0, fontSize: 9, letterSpacing: '.46em',
+        textTransform: 'uppercase', color: 'rgba(232,244,250,.32)',
+        animation: 'tw-blink 2.8s ease-in-out infinite', whiteSpace: 'nowrap',
+        zIndex: 12, pointerEvents: 'none',
+      }}>Scroll to explore</p>
     </section>
   );
 };

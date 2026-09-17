@@ -36,7 +36,7 @@ export const MobileNav = ({ isOpen, onClose, subsidiaries = [] }) => {
         >
           {/* Header */}
           <div className="flex items-center justify-between border-b border-navy-800 pb-6">
-            <LogoPlate logo="trinetra" size="md" />
+            <LogoPlate logo="trinetra" size="md" forceGlow />
             <button
               onClick={onClose}
               aria-label="Close navigation"
@@ -73,7 +73,7 @@ export const MobileNav = ({ isOpen, onClose, subsidiaries = [] }) => {
                     className="flex items-center justify-between p-3.5 rounded-xl bg-navy-900/80 border border-brand-500/15 hover:border-brand-400/40"
                   >
                     <div className="flex items-center gap-3">
-                      <LogoPlate logo={sub.id} size="sm" />
+                      <LogoPlate logo={sub.id} size="sm" forceGlow />
                       <div>
                         <div className="font-bold text-sm text-white">{sub.fullName}</div>
                         <div className="text-xs text-brand-200/70">{sub.heroBadge}</div>

@@ -112,10 +112,10 @@ export const CoverageCalculator = () => {
         </div>
 
         {/* Output Result Card */}
-        <div className="lg:col-span-5 p-6 rounded-2xl bg-navy-900 text-white border border-brand-500/30 text-center space-y-4 shadow-xl">
-          <Package className="w-10 h-10 text-brand-400 mx-auto" />
+        <div className="lg:col-span-5 p-6 rounded-2xl bg-brand-50 dark:bg-navy-900 text-navy-900 dark:text-white border border-brand-500/30 text-center space-y-4 shadow-xl">
+          <Package className="w-10 h-10 text-brand-500 dark:text-brand-400 mx-auto" />
           <div>
-            <div className="text-xs text-brand-300 font-semibold uppercase tracking-wider">
+            <div className="text-xs text-brand-600 dark:text-brand-300 font-semibold uppercase tracking-wider">
               Estimated Requirement
             </div>
             <motion.div
@@ -127,12 +127,12 @@ export const CoverageCalculator = () => {
             >
               {estimatedBags} Bags
             </motion.div>
-            <div className="text-xs text-brand-200/80 font-mono">
+            <div className="text-xs text-navy-600 dark:text-brand-200/80 font-mono">
               ({totalWeightKg} kg Total Powder)
             </div>
           </div>
 
-          <div className="pt-2 text-xs text-left text-brand-200/70 space-y-1 border-t border-navy-800">
+          <div className="pt-2 text-xs text-left text-navy-600 dark:text-brand-200/70 space-y-1 border-t border-brand-200 dark:border-navy-800">
             <div className="flex items-center gap-1.5">
               <Check className="w-3.5 h-3.5 text-emerald-400" />
               <span>Includes standard 10% wastage allowance</span>

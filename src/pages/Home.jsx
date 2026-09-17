@@ -48,7 +48,7 @@ export const Home = () => {
       <CompaniesGrid />
 
       {/* 5. Capability Strip Marquee */}
-      <div className="py-8 bg-navy-950 border-y border-brand-500/20">
+      <div className="py-8 bg-brand-50 dark:bg-navy-950 border-y border-brand-500/20">
         <Marquee items={CAPABILITIES} />
       </div>
 
