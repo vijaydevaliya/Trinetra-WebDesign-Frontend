@@ -1,0 +1,15 @@
+{
+  "name": "Trinetra Technoworld Group",
+  "short_name": "Trinetra",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#04101F",
+  "theme_color": "#04101F",
+  "icons": [
+    {
+      "src": "/logos/main_logo (1).png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
