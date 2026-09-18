@@ -1,3 +1,4 @@
+import 'express-async-errors';
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
@@ -7,6 +8,7 @@ import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import projectRoutes from './routes/projectRoutes.js';
 import blogRoutes from './routes/blogRoutes.js';
+import categoryRoutes from './routes/categoryRoutes.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -22,14 +24,20 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/blogs', blogRoutes);
+app.use('/api/categories', categoryRoutes);
 
-// Multer / general error handler
+// Catches sync throws, async rejections (via express-async-errors), and
+// Multer errors alike.
+// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
-  if (err) {
-    console.error(err);
-    return res.status(400).json({ message: err.message || 'Something went wrong' });
+  console.error(err);
+  if (err.name === 'ValidationError') {
+    return res.status(400).json({ message: err.message });
   }
-  next();
+  if (err.code === 11000) {
+    return res.status(409).json({ message: 'A record with this value already exists' });
+  }
+  res.status(err.status || 400).json({ message: err.message || 'Something went wrong' });
 });
 
 app.use((req, res) => res.status(404).json({ message: 'Route not found' }));

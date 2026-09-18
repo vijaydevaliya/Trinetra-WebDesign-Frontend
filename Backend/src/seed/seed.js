@@ -10,6 +10,7 @@ import { Product } from '../models/Product.js';
 import { Project } from '../models/Project.js';
 import { Blog } from '../models/Blog.js';
 import { PRODUCTS_SEED, PROJECTS_SEED, BLOGS_SEED } from './seedData.js';
+import { seedCategories } from './seedCategories.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const uploadsRoot = path.join(__dirname, '..', '..', 'uploads');
@@ -121,6 +122,7 @@ const run = async () => {
   await seedProducts();
   await seedProjects();
   await seedBlogs();
+  await seedCategories();
   console.log('Seed complete.');
   process.exit(0);
 };
