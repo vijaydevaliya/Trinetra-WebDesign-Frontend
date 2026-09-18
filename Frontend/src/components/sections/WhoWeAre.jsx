@@ -1,9 +1,33 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ShieldCheck, Cpu } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Lightbulb, ShieldCheck, Smartphone, BadgeCheck, ArrowRight } from 'lucide-react';
 import { LogoPlate } from '../ui/LogoPlate';
 import { Reveal } from '../ui/Reveal';
 import { SectionHeading } from '../ui/SectionHeading';
+
+const HIGHLIGHTS = [
+  {
+    icon: Lightbulb,
+    title: 'Smart Infrastructure',
+    desc: 'Automated lighting and IoT energy systems.',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Enhanced Security',
+    desc: 'AI-powered CCTV and door-locks.',
+  },
+  {
+    icon: Smartphone,
+    title: 'Comfort Customization',
+    desc: 'Control temperature & lights with voice.',
+  },
+  {
+    icon: BadgeCheck,
+    title: 'Fully Certified Units',
+    desc: 'Certified installations with legal standards.',
+  },
+];
 
 export const WhoWeAre = () => {
   return (
@@ -47,27 +71,24 @@ export const WhoWeAre = () => {
             </Reveal>
 
             <Reveal y={20} delay={0.2}>
-              <div className="space-y-5 pt-2">
-                {[
-                  {
-                    icon: Cpu,
-                    title: 'Cross-Domain Engineering',
-                    desc: 'Deep expertise across software, design, and manufacturing—delivering solutions built for real-world reliability.',
-                  },
-                  {
-                    icon: ShieldCheck,
-                    title: 'Unified Support & Delivery',
-                    desc: 'From onboarding to after-sales service, every subsidiary holds the same standard of responsiveness and accountability.',
-                  },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <div className="w-11 h-11 flex-shrink-0 flex items-center justify-center rounded-xl bg-brand-100/50 dark:bg-navy-900 border border-brand-500/20">
-                      <item.icon className="w-5 h-5 text-brand-500" />
+              <div className="grid grid-cols-2 gap-3">
+                {HIGHLIGHTS.map((item) => (
+                  <div
+                    key={item.title}
+                    className="p-4 rounded-xl bg-white dark:bg-navy-900 border border-brand-500/10 shadow-sm"
+                  >
+                    <div className="w-8 h-8 flex items-center justify-center rounded-full bg-brand-500/10 mb-2.5">
+                      <item.icon className="w-4 h-4 text-brand-500" strokeWidth={1.75} />
                     </div>
-                    <div>
-                      <h4 className="font-bold text-navy-950 dark:text-white text-base mb-1">{item.title}</h4>
-                      <p className="text-sm text-navy-600 dark:text-brand-200/70">{item.desc}</p>
-                    </div>
+                    <h4 className="font-bold text-navy-950 dark:text-white text-sm mb-1">{item.title}</h4>
+                    <p className="text-xs text-navy-600 dark:text-brand-200/70 leading-snug mb-2">{item.desc}</p>
+                    <Link
+                      to="/contact"
+                      className="inline-flex items-center gap-1 text-xs font-semibold text-brand-600 dark:text-brand-300 hover:text-brand-700 dark:hover:text-brand-200"
+                    >
+                      Learn More
+                      <ArrowRight className="w-3 h-3" />
+                    </Link>
                   </div>
                 ))}
               </div>

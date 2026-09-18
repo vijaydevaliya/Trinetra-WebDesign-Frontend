@@ -1,17 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { CTABand } from '../components/sections/CTABand';
-import { BLOGS } from '../data/blogs';
+import { api, resolveImageUrl } from '../lib/api';
 
 export const BlogDetail = () => {
   const { slug } = useParams();
-  const blog = BLOGS.find((b) => b.slug === slug);
+  const [blog, setBlog] = useState(null);
+  const [notFound, setNotFound] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  if (!blog) {
+  useEffect(() => {
+    setLoading(true);
+    setNotFound(false);
+    api
+      .get(`/api/blogs/slug/${slug}`)
+      .then(setBlog)
+      .catch(() => setNotFound(true))
+      .finally(() => setLoading(false));
+  }, [slug]);
+
+  if (notFound) {
     return <Navigate to="/blogs" replace />;
   }
+
+  if (loading || !blog) {
+    return (
+      <div className="pt-32 pb-20 bg-brand-50 dark:bg-navy-950 min-h-screen flex justify-center">
+        <div className="w-8 h-8 rounded-full border-2 border-brand-500 border-t-transparent animate-spin" />
+      </div>
+    );
+  }
+
+  const [coverImage, ...galleryImages] = blog.images;
 
   return (
     <>
@@ -37,9 +59,11 @@ export const BlogDetail = () => {
             {blog.title}
           </h1>
 
-          <div className="mt-8 rounded-2xl overflow-hidden shadow-xl">
-            <img src={blog.image} alt={blog.title} className="w-full h-auto object-cover" />
-          </div>
+          {coverImage && (
+            <div className="mt-8 rounded-2xl overflow-hidden shadow-xl">
+              <img src={resolveImageUrl(coverImage)} alt={blog.title} className="w-full h-auto object-cover" />
+            </div>
+          )}
 
           <div className="mt-10 space-y-5">
             {blog.content.map((paragraph, idx) => (
@@ -48,6 +72,16 @@ export const BlogDetail = () => {
               </p>
             ))}
           </div>
+
+          {galleryImages.length > 0 && (
+            <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 gap-4">
+              {galleryImages.map((img) => (
+                <div key={img} className="aspect-square rounded-xl overflow-hidden">
+                  <img src={resolveImageUrl(img)} alt={blog.title} className="w-full h-full object-cover" />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </article>
 

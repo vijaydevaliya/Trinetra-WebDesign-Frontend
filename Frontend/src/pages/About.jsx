@@ -23,8 +23,8 @@ export const About = () => {
           {/* Header */}
           <SectionHeading
             badge="Corporate Overview"
-            title="Automation at the Core, Expertise at the Edge"
-            subtitle="Trinetra Technoworld Pvt Ltd consolidates advanced engineering, software automation, and specialized manufacturing under one unified corporate banner."
+            title="Discover Our Commitment to Smart Living"
+            subtitle="Explore Our Comprehensive Range of Smart Home Services"
           />
 
           {/* Philosophy Section */}
