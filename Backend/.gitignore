@@ -1,0 +1,12 @@
+node_modules/
+uploads/*
+!uploads/products
+!uploads/projects
+!uploads/blogs
+uploads/products/*
+uploads/projects/*
+uploads/blogs/*
+!uploads/products/.gitkeep
+!uploads/projects/.gitkeep
+!uploads/blogs/.gitkeep
+.env
