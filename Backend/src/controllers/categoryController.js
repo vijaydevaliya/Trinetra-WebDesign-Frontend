@@ -8,8 +8,32 @@ const MODEL_BY_TYPE = { product: Product, project: Project, blog: Blog };
 export const list = async (req, res) => {
   const filter = {};
   if (req.query.type) filter.type = req.query.type;
-  const categories = await Category.find(filter).sort({ name: 1 });
-  res.json(categories);
+
+  const { page } = req.query;
+
+  // No page param: return the full list, unpaginated (used by the
+  // Product/Project forms' category dropdowns, which need every option).
+  if (!page) {
+    const categories = await Category.find(filter).sort({ name: 1 });
+    return res.json(categories);
+  }
+
+  const pageNum = Math.max(1, parseInt(page, 10) || 1);
+  const limitNum = Math.max(1, parseInt(req.query.limit, 10) || 10);
+  const skip = (pageNum - 1) * limitNum;
+
+  const [items, total] = await Promise.all([
+    Category.find(filter).sort({ name: 1 }).skip(skip).limit(limitNum),
+    Category.countDocuments(filter),
+  ]);
+
+  res.json({
+    items,
+    total,
+    page: pageNum,
+    limit: limitNum,
+    totalPages: Math.max(1, Math.ceil(total / limitNum)),
+  });
 };
 
 export const create = async (req, res) => {

@@ -1,22 +1,22 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { cloudinary } from '../config/cloudinary.js';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const uploadsRoot = path.join(__dirname, '..', '..', 'uploads');
+// Cloudinary URLs look like:
+//   https://res.cloudinary.com/<cloud>/image/upload/v169.../trinetra/products/foo-123.webp
+// The public_id is everything after the version segment, minus the extension.
+const publicIdFromUrl = (url) => {
+  const match = url.match(/\/upload\/(?:v\d+\/)?(.+)\.[a-zA-Z0-9]+$/);
+  return match ? match[1] : null;
+};
 
-// imagePath looks like "/uploads/products/foo.webp"
-export const deleteImageFile = (imagePath) => {
-  if (!imagePath || !imagePath.startsWith('/uploads/')) return;
-  const relative = imagePath.replace('/uploads/', '');
-  const absolute = path.join(uploadsRoot, relative);
-  fs.unlink(absolute, (err) => {
-    if (err && err.code !== 'ENOENT') {
-      console.error(`Failed to delete image ${absolute}:`, err.message);
-    }
+export const deleteImageFile = (imageUrl) => {
+  if (!imageUrl || !imageUrl.includes('res.cloudinary.com')) return;
+  const publicId = publicIdFromUrl(imageUrl);
+  if (!publicId) return;
+  cloudinary.uploader.destroy(publicId, (err) => {
+    if (err) console.error(`Failed to delete Cloudinary image ${publicId}:`, err.message);
   });
 };
 
-export const deleteImageFiles = (imagePaths = []) => {
-  imagePaths.forEach(deleteImageFile);
+export const deleteImageFiles = (imageUrls = []) => {
+  imageUrls.forEach(deleteImageFile);
 };

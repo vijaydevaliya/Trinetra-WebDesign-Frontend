@@ -9,6 +9,8 @@ import productRoutes from './routes/productRoutes.js';
 import projectRoutes from './routes/projectRoutes.js';
 import blogRoutes from './routes/blogRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
+import tribondProductRoutes from './routes/tribondProductRoutes.js';
+import settingsRoutes from './routes/settingsRoutes.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -25,6 +27,8 @@ app.use('/api/products', productRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/blogs', blogRoutes);
 app.use('/api/categories', categoryRoutes);
+app.use('/api/tribond-products', tribondProductRoutes);
+app.use('/api/settings', settingsRoutes);
 
 // Catches sync throws, async rejections (via express-async-errors), and
 // Multer errors alike.

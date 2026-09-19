@@ -31,8 +31,31 @@ const parseContent = (content) => {
 };
 
 export const list = async (req, res) => {
-  const items = await Blog.find().sort({ createdAt: -1 });
-  res.json(items);
+  const { page } = req.query;
+
+  // No page param: return the full list, unpaginated (used by public pages
+  // that need every record for client-side category filtering).
+  if (!page) {
+    const items = await Blog.find().sort({ createdAt: -1 });
+    return res.json(items);
+  }
+
+  const pageNum = Math.max(1, parseInt(page, 10) || 1);
+  const limitNum = Math.max(1, parseInt(req.query.limit, 10) || 10);
+  const skip = (pageNum - 1) * limitNum;
+
+  const [items, total] = await Promise.all([
+    Blog.find().sort({ createdAt: -1 }).skip(skip).limit(limitNum),
+    Blog.countDocuments(),
+  ]);
+
+  res.json({
+    items,
+    total,
+    page: pageNum,
+    limit: limitNum,
+    totalPages: Math.max(1, Math.ceil(total / limitNum)),
+  });
 };
 
 export const getOne = async (req, res) => {
@@ -56,7 +79,7 @@ export const create = async (req, res) => {
     await Blog.updateMany({ featured: true }, { featured: false });
   }
 
-  const images = (req.files || []).map((f) => publicPathFor('blogs', f.filename));
+  const images = (req.files || []).map((f) => publicPathFor('blogs', f));
 
   const item = await Blog.create({
     title,
@@ -104,7 +127,7 @@ export const update = async (req, res) => {
   const removed = item.images.filter((img) => !keepImages.includes(img));
   deleteImageFiles(removed);
 
-  const uploaded = (req.files || []).map((f) => publicPathFor('blogs', f.filename));
+  const uploaded = (req.files || []).map((f) => publicPathFor('blogs', f));
   item.images = [...keepImages, ...uploaded];
 
   await item.save();
