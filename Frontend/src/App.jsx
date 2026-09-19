@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { HelmetProvider } from 'react-helmet-async';
 import { ThemeProvider } from './context/ThemeContext';
+import { SiteSettingsProvider } from './context/SiteSettingsContext';
 import { AuthProvider } from './context/AuthContext';
 import { Layout } from './components/layout/Layout';
 import { AdminLayout } from './components/admin/AdminLayout';
@@ -16,6 +17,7 @@ import { Tribond } from './pages/Tribond';
 import { About } from './pages/About';
 import { Products } from './pages/Products';
 import { Projects } from './pages/Projects';
+import { ProjectDetail } from './pages/ProjectDetail';
 import { Blogs } from './pages/Blogs';
 import { BlogDetail } from './pages/BlogDetail';
 import { Contact } from './pages/Contact';
@@ -30,6 +32,9 @@ import { ProjectForm } from './pages/admin/projects/ProjectForm';
 import { BlogsAdmin } from './pages/admin/blogs/BlogsAdmin';
 import { BlogForm } from './pages/admin/blogs/BlogForm';
 import { CategoriesAdmin } from './pages/admin/categories/CategoriesAdmin';
+import { TribondProductsAdmin } from './pages/admin/tribond/TribondProductsAdmin';
+import { TribondProductForm } from './pages/admin/tribond/TribondProductForm';
+import { SiteSettingsAdmin } from './pages/admin/settings/SiteSettingsAdmin';
 
 // Scroll to top helper component on route changes
 const ScrollToTop = () => {
@@ -64,6 +69,10 @@ const AdminApp = () => (
       <Route path="/admin/blogs/new" element={withAdminLayout(<BlogForm />)} />
       <Route path="/admin/blogs/:id" element={withAdminLayout(<BlogForm />)} />
       <Route path="/admin/categories" element={withAdminLayout(<CategoriesAdmin />)} />
+      <Route path="/admin/tribond-products" element={withAdminLayout(<TribondProductsAdmin />)} />
+      <Route path="/admin/tribond-products/new" element={withAdminLayout(<TribondProductForm />)} />
+      <Route path="/admin/tribond-products/:id" element={withAdminLayout(<TribondProductForm />)} />
+      <Route path="/admin/settings" element={withAdminLayout(<SiteSettingsAdmin />)} />
       <Route path="*" element={<Navigate to="/admin" replace />} />
     </Routes>
   </AuthProvider>
@@ -74,6 +83,7 @@ const MarketingApp = () => {
 
   return (
     <Layout>
+      <ScrollToTop />
       <AnimatePresence mode="wait">
         <motion.div
           key={location.pathname}
@@ -90,6 +100,7 @@ const MarketingApp = () => {
             <Route path="/about" element={<About />} />
             <Route path="/products" element={<Products />} />
             <Route path="/projects" element={<Projects />} />
+            <Route path="/projects/:id" element={<ProjectDetail />} />
             <Route path="/blogs" element={<Blogs />} />
             <Route path="/blogs/:slug" element={<BlogDetail />} />
             <Route path="/contact" element={<Contact />} />
@@ -108,7 +119,9 @@ export function App() {
   return (
     <HelmetProvider>
       <ThemeProvider>
-        {isAdmin ? <AdminApp /> : <MarketingApp />}
+        <SiteSettingsProvider>
+          {isAdmin ? <AdminApp /> : <MarketingApp />}
+        </SiteSettingsProvider>
       </ThemeProvider>
     </HelmetProvider>
   );

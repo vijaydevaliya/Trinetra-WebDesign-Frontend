@@ -58,11 +58,11 @@ export const ImageUploader = ({ existingImages, onRemoveExisting, newFiles, onAd
         <label className="w-24 h-24 rounded-xl border-2 border-dashed border-brand-500/30 flex flex-col items-center justify-center gap-1 text-brand-500 cursor-pointer hover:bg-brand-500/5 transition-colors">
           <ImagePlus className="w-5 h-5" />
           <span className="text-[10px] font-semibold">Add</span>
-          <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple className="hidden" onChange={handleFileChange} />
+          <input type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/avif" multiple className="hidden" onChange={handleFileChange} />
         </label>
       </div>
       <p className="mt-2 text-xs text-navy-500 dark:text-brand-200/60">
-        JPG, PNG, WEBP or GIF. You can add multiple images.
+        JPG, PNG, WEBP, GIF or AVIF. You can add multiple images.
       </p>
     </div>
   );

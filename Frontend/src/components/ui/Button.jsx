@@ -18,7 +18,7 @@ export const Button = ({
   const sizeClasses = {
     sm: 'px-4 py-2 text-xs font-medium rounded-lg gap-1.5',
     md: 'px-6 py-3 text-sm font-semibold rounded-xl gap-2',
-    lg: 'px-8 py-4 text-base font-semibold rounded-xl gap-2.5',
+    lg: 'px-5 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-semibold rounded-xl gap-2 sm:gap-2.5',
   };
 
   const variantClasses = {
@@ -28,11 +28,11 @@ export const Button = ({
     secondary: 'bg-navy-800 text-brand-50 hover:bg-navy-700 border border-navy-700 dark:bg-navy-800 dark:hover:bg-navy-700',
   };
 
-  const baseClasses = `inline-flex items-center justify-center font-sans tracking-wide transition-all duration-300 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none cursor-pointer ${sizeClasses[size]} ${variantClasses[variant]} ${className}`;
+  const baseClasses = `inline-flex items-center justify-center text-center whitespace-normal sm:whitespace-nowrap font-sans tracking-wide transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none cursor-pointer ${sizeClasses[size]} ${variantClasses[variant]} ${className}`;
 
   const content = (
     <>
-      <span>{children}</span>
+      {children}
       {Icon && <Icon className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />}
     </>
   );
@@ -62,7 +62,6 @@ export const Button = ({
 
   return (
     <motion.button
-      whileHover={{ y: -2 }}
       whileTap={{ scale: 0.98 }}
       type={type}
       onClick={onClick}

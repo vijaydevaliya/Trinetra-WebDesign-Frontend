@@ -4,6 +4,7 @@ import { ArrowLeft } from 'lucide-react';
 import { api } from '../../../lib/api';
 import { useCategories } from '../../../hooks/useCategories';
 import { ImageUploader } from '../../../components/admin/ImageUploader';
+import { AdminFormSkeleton } from '../../../components/admin/AdminFormSkeleton';
 
 export const ProductForm = () => {
   const { id } = useParams();
@@ -64,7 +65,7 @@ export const ProductForm = () => {
   };
 
   if (loading) {
-    return <p className="text-sm text-navy-600 dark:text-brand-200/70">Loading…</p>;
+    return <AdminFormSkeleton fields={3} />;
   }
 
   return (

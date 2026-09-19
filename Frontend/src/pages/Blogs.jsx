@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { CTABand } from '../components/sections/CTABand';
+import { CardGridSkeleton } from '../components/ui/CardGridSkeleton';
 import { api, resolveImageUrl } from '../lib/api';
 
 export const Blogs = () => {
@@ -38,9 +39,7 @@ export const Blogs = () => {
       <section className="py-16 bg-brand-50 dark:bg-navy-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
           {loading ? (
-            <div className="flex justify-center py-20">
-              <div className="w-8 h-8 rounded-full border-2 border-brand-500 border-t-transparent animate-spin" />
-            </div>
+            <CardGridSkeleton count={6} columns="sm:grid-cols-2 lg:grid-cols-3" aspect="aspect-[16/10]" withLines />
           ) : (
             <>
               {/* Blog Grid */}

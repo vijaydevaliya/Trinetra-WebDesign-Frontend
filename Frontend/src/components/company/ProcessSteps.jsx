@@ -10,11 +10,11 @@ const APPLICATION_STEPS = [
   { step: '05', title: 'Grouting & Final Curing', desc: 'Allow adhesive 24 hours setting time before applying Tribond Stainproof Epoxy Grout to joints.', icon: ShieldCheck },
 ];
 
-export const ProcessSteps = () => {
+export const ProcessSteps = ({ steps = APPLICATION_STEPS, complianceTag = 'IS 15477 Compliant' }) => {
   return (
     <div className="space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-        {APPLICATION_STEPS.map((s, idx) => (
+        {steps.map((s, idx) => (
           <motion.div
             key={idx}
             initial={{ opacity: 0, y: 20 }}
@@ -41,10 +41,12 @@ export const ProcessSteps = () => {
               </p>
             </div>
 
-            <div className="mt-4 pt-3 border-t border-brand-200 dark:border-navy-800 flex items-center gap-1 text-[11px] font-semibold text-brand-600 dark:text-brand-300">
-              <CheckCircle2 className="w-3.5 h-3.5 text-brand-400" />
-              <span>IS 15477 Compliant</span>
-            </div>
+            {complianceTag && (
+              <div className="mt-4 pt-3 border-t border-brand-200 dark:border-navy-800 flex items-center gap-1 text-[11px] font-semibold text-brand-600 dark:text-brand-300">
+                <CheckCircle2 className="w-3.5 h-3.5 text-brand-400" />
+                <span>{complianceTag}</span>
+              </div>
+            )}
           </motion.div>
         ))}
       </div>

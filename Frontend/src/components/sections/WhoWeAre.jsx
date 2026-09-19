@@ -35,8 +35,8 @@ export const WhoWeAre = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           badge="About Trinetra Technoworld"
-          title="Engineered for Tomorrow's Infrastructure"
-          subtitle="Trinetra Technoworld Pvt Ltd bridges technology automation and real-world domain expertise."
+          title="Discover Our Commitment to Start Smart Living"
+          subtitle="Explore Our Comprehensive Range of Smart Home Services"
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mt-12">
@@ -56,7 +56,7 @@ export const WhoWeAre = () => {
                   transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
                   className="relative z-10 flex items-center justify-center p-4"
                 >
-                  <LogoPlate logo="trinetra-full" size="xl" className="filter drop-shadow-none dark:drop-shadow-[0_0_24px_rgba(79,192,232,0.7)]" />
+                  <LogoPlate logo="trinetra-full" size="xl" />
                 </motion.div>
               </div>
             </Reveal>

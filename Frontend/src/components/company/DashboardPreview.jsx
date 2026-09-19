@@ -52,8 +52,7 @@ export const DashboardPreview = () => {
         ].map((m, i) => (
           <motion.div
             key={i}
-            whileHover={{ y: -3 }}
-            className="p-4 rounded-2xl bg-brand-50 dark:bg-navy-900/80 border border-brand-500/15"
+            className="p-4 rounded-2xl bg-brand-50 dark:bg-navy-900/80 border border-brand-500/15 hover:bg-brand-500/10 hover:border-brand-400/50 hover:-translate-y-1 hover:shadow-lg hover:shadow-brand-500/15 transition-all duration-300"
           >
             <div className="flex items-center justify-between text-brand-600 dark:text-brand-400 mb-2">
               <span className="text-xs font-medium text-navy-600 dark:text-brand-200/70">{m.title}</span>

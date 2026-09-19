@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, ShoppingCart } from 'lucide-react';
 import { api, resolveImageUrl } from '../lib/api';
 import { useCategories } from '../hooks/useCategories';
+import { CardGridSkeleton } from '../components/ui/CardGridSkeleton';
 
 export const Products = () => {
   const [products, setProducts] = useState([]);
@@ -76,14 +77,10 @@ export const Products = () => {
             })}
           </div>
 
-          <p className="mt-6 text-sm text-navy-600 dark:text-brand-200/70">
-            Showing <span className="font-semibold text-navy-950 dark:text-white">{filteredProducts.length}</span> products
-          </p>
-
           {/* Product Grid */}
           {loading ? (
-            <div className="flex justify-center py-20">
-              <div className="w-8 h-8 rounded-full border-2 border-brand-500 border-t-transparent animate-spin" />
+            <div className="mt-6">
+              <CardGridSkeleton count={8} columns="sm:grid-cols-2 lg:grid-cols-4" aspect="aspect-square" />
             </div>
           ) : (
             <AnimatePresence mode="wait">

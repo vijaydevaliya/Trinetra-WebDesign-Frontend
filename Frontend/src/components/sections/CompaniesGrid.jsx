@@ -32,7 +32,7 @@ export const CompaniesGrid = () => {
                 {/* Logo & Visual Side - Borderless Clean Floating Logo */}
                 <div className={`lg:col-span-5 ${isEven ? 'lg:order-1' : 'lg:order-2'} flex flex-col items-center justify-center p-6 text-center relative`}>
                   <div className="absolute w-48 h-48 bg-brand-400/20 blur-3xl rounded-full pointer-events-none" />
-                  <LogoPlate logo={sub.id} size="lg" className="relative z-10 filter drop-shadow-none dark:drop-shadow-[0_0_20px_rgba(79,192,232,0.7)]" />
+                  <LogoPlate logo={sub.id} size="lg" className="relative z-10" />
                   <span className="text-xs font-semibold px-3.5 py-1.5 rounded-full bg-brand-500/10 text-brand-600 dark:text-brand-300 border border-brand-500/20 mt-5">
                     {sub.heroBadge}
                   </span>

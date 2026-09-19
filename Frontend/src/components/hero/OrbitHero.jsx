@@ -261,6 +261,7 @@ export const OrbitHero = () => {
       s.bangDone = false;
       s.lightning = null;
       s.textLightning = [];
+      s.textPositions = null;
       s.shakeAmp = 0;
     };
 
@@ -289,6 +290,7 @@ export const OrbitHero = () => {
     let raf = 0;
     let last = performance.now();
     const t0 = performance.now();
+    let visible = true;
 
     const frame = (now) => {
       const dt = Math.min((now - last) / 1000, 0.05);
@@ -431,27 +433,32 @@ export const OrbitHero = () => {
 
       /* ----------------------------------------- text lightning on letters */
       if (!reduced && t >= T_TEXT_START) {
-        const line1El = line1Ref.current;
-        const line2El = line2Ref.current;
-        const wrapRect = wrap.getBoundingClientRect();
-        const collectPos = (el) => {
-          if (!el) return [];
-          return Array.from(el.querySelectorAll('.tw-letter')).map(span => {
-            const r = span.getBoundingClientRect();
-            return { x: r.left - wrapRect.left + r.width / 2, y: r.top - wrapRect.top + r.height * 0.12 };
-          });
-        };
-        const allPos = [...collectPos(line1El), ...collectPos(line2El)];
-        if (s.textLightning.length === 0 && allPos.length > 0) {
-          s.textLightning = allPos.map((pos, i) => ({
-            x: pos.x, y: pos.y,
-            nextAt: T_TEXT_START + i * 0.058,
-            strikeAt: -10, duration: 0.28,
-            points: null, color: [C.cyan, '#c0eeff', C.sky][i % 3],
-            phase: 'ignition',
-          }));
-        } else {
-          allPos.forEach((pos, i) => { if (s.textLightning[i]) { s.textLightning[i].x = pos.x; s.textLightning[i].y = pos.y; } });
+        // Letters don't move once laid out, so their positions are measured
+        // once (cached on s.textPositions) instead of every frame — repeated
+        // getBoundingClientRect() reads force a synchronous layout on every
+        // single animation frame, which is a major source of scroll jank.
+        if (!s.textPositions) {
+          const line1El = line1Ref.current;
+          const line2El = line2Ref.current;
+          const wrapRect = wrap.getBoundingClientRect();
+          const collectPos = (el) => {
+            if (!el) return [];
+            return Array.from(el.querySelectorAll('.tw-letter')).map(span => {
+              const r = span.getBoundingClientRect();
+              return { x: r.left - wrapRect.left + r.width / 2, y: r.top - wrapRect.top + r.height * 0.12 };
+            });
+          };
+          const allPos = [...collectPos(line1El), ...collectPos(line2El)];
+          if (allPos.length > 0) {
+            s.textPositions = allPos;
+            s.textLightning = allPos.map((pos, i) => ({
+              x: pos.x, y: pos.y,
+              nextAt: T_TEXT_START + i * 0.058,
+              strikeAt: -10, duration: 0.28,
+              points: null, color: [C.cyan, '#c0eeff', C.sky][i % 3],
+              phase: 'ignition',
+            }));
+          }
         }
         for (const lt of s.textLightning) {
           if (t >= lt.nextAt && (lt.phase === 'ignition' || lt.points === null)) {
@@ -540,8 +547,24 @@ export const OrbitHero = () => {
       raf = requestAnimationFrame(frame);
     };
 
-    raf = requestAnimationFrame(frame);
-    return () => { cancelAnimationFrame(raf); ro.disconnect(); };
+    // This canvas animation is expensive (particles, glow blur, lightning
+    // bolts) and otherwise runs forever. Pausing it whenever the hero
+    // scrolls out of view stops it competing with scroll/paint elsewhere
+    // on the page — the single biggest win for scroll smoothness.
+    const io = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible && !raf) {
+        last = performance.now();
+        raf = requestAnimationFrame(frame);
+      } else if (!visible && raf) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      }
+    }, { threshold: 0 });
+    io.observe(wrap);
+
+    if (visible) raf = requestAnimationFrame(frame);
+    return () => { cancelAnimationFrame(raf); ro.disconnect(); io.disconnect(); };
   }, [reduced]);
 
   /* ---------------------------------------------------------------- markup */

@@ -26,22 +26,26 @@ export const SUBSIDIARIES = [
     logo: '/logos/vasuki.jpg',
     color: '#2B9BE0',
     heroBadge: 'Society Management System',
-    description: 'Vasuki simplifies gated community operations, automating maintenance collections, digital gate-pass verification, accounting, and resident engagement in one unified mobile and web ecosystem.',
+    description: 'Vasuki simplifies gated community operations, automating maintenance collections, digital gate-pass verification, accounting, and resident engagement in one unified mobile and web ecosystem — built for houses, managers, and guards alike.',
     iconName: 'Building2',
     services: [
-      { title: 'Resident & Unit Records', desc: 'Centralised digital directory with ownership, tenant, and vehicle verification.', icon: 'Users' },
-      { title: 'Maintenance & Online Collections', desc: 'Automated invoice generation, payment gateway integration, and auto-reconciliation.', icon: 'Receipt' },
+      { title: 'Resident & Unit Records', desc: 'Centralised digital directory with ownership, tenant, and vehicle verification for every house.', icon: 'Users' },
+      { title: 'Visitor & Gate-Pass Management', desc: 'QR-code visitor approval, delivery/courier tracking, and instant resident alerts at the gate.', icon: 'Bell' },
+      { title: 'Guard & Security Operations', desc: 'Guard app with staff attendance, shift handover, SOS alerts, and offline-first entry logging.', icon: 'ShieldCheck' },
+      { title: 'Maintenance & Online Collections', desc: 'Automated invoice generation, UPI/NetBanking payments, and auto-reconciliation per unit.', icon: 'Receipt' },
+      { title: 'Society Accounting & Compliance', desc: 'Double-entry ledger, GST/TDS-ready invoicing, budgeting, and auditor-ready export files.', icon: 'Receipt' },
+      { title: 'Vendor & Asset Management', desc: 'Contract tracking, service schedules, and maintenance history for lifts, pumps, and CCTV.', icon: 'Package' },
       { title: 'Complaint & Ticket Management', desc: 'SLA-tracked helpdesk dispatching technicians with real-time status updates.', icon: 'ShieldCheck' },
-      { title: 'Visitor & Gate-Pass Management', desc: 'QR-code verification, staff attendance tracking, and instant resident alerts.', icon: 'Bell' },
-      { title: 'Notice Board & Announcements', desc: 'Instant push notifications, SMS alerts, and official society announcements.', icon: 'CalendarCheck' },
+      { title: 'Notice Board & Community Engagement', desc: 'Push, SMS, and WhatsApp alerts plus polls, surveys, and event RSVPs.', icon: 'CalendarCheck' },
       { title: 'Amenity & Facility Booking', desc: 'Slot management for clubhouses, sports courts, and common halls with fee collection.', icon: 'Building2' },
-      { title: 'Society Accounting & Audits', desc: 'Double-entry ledger accounting, expense reporting, and auditor-ready export files.', icon: 'Receipt' },
-      { title: 'Committee Dashboards', desc: 'Granular analytics on receivables, expenses, vendor contracts, and resident approval queues.', icon: 'Users' }
+      { title: 'Manager & Committee Dashboards', desc: 'Multi-tower analytics on receivables, expenses, vendor contracts, and approval queues.', icon: 'Users' }
     ],
     features: [
       'Automated WhatsApp & Email payment reminders',
       'Integrated UPI and NetBanking payment gateway',
       'Guard app with offline sync capability',
+      'Smart-lock & IoT gate integration for keyless entry',
+      'Multi-tower / multi-phase society support from one dashboard',
       '100% GDPR & data privacy compliant storage'
     ]
   },
@@ -49,29 +53,32 @@ export const SUBSIDIARIES = [
     id: 'vishwakarma',
     name: 'Vishwakarma',
     fullName: 'Vishwakarma by Trinetra',
-    tagline: 'Spaces designed with intent.',
-    positioning: 'Full-service interior design and turnkey execution for residential, commercial, and retail environments.',
+    tagline: 'Spaces designed around you. Built for the way you live.',
+    positioning: 'Vishwakarma brings together interior design, planning, visualization, and turnkey execution to transform residential and commercial spaces from concept to completion.',
     route: '/vishwakarma',
     logo: '/logos/vishwakarma.jpg',
     color: '#1565C0',
     heroBadge: 'Interior Design & Turnkey Execution',
-    description: 'Vishwakarma combines architectural precision, 3D spatial visualization, and master craftsmanship to transform raw structures into luxury homes, high-performance office spaces, and boutique retail stores.',
+    description: 'Vishwakarma is an interior design and turnkey execution company operating as part of the Trinetra Technoworld ecosystem. We combine design thinking, planning, technology, project coordination, and execution to create spaces that are visually refined, functionally considered, and carefully delivered — for homes, workplaces, hospitality spaces, and commercial environments.',
     iconName: 'Sofa',
     services: [
-      { title: 'Space Planning & Layouts', desc: 'Ergonomic 2D floorplan optimization for maximum light, workflow, and utility.', icon: 'LayoutGrid' },
-      { title: '3D Visualisation & Walkthroughs', desc: 'Photorealistic render previews and immersive VR walkthroughs before construction.', icon: 'Lightbulb' },
-      { title: 'Modular Kitchens & Wardrobes', desc: 'Precision engineered factory-finished cabinetry using marine-grade plywood.', icon: 'Ruler' },
-      { title: 'False Ceiling & Lighting Design', desc: 'Ambient, task, and architectural lighting layouts with smart dimming integration.', icon: 'Lightbulb' },
-      { title: 'Furniture & Custom Carpentry', desc: 'Handcrafted loose furniture, accent panelling, and custom metalwork.', icon: 'Sofa' },
-      { title: 'Turnkey Project Execution', desc: 'End-to-end civil, electrical, plumbing, HVAC, and decor management with single point accountability.', icon: 'HardHat' },
-      { title: 'Material & Finish Consultation', desc: 'Curated moodboards covering marbles, veneers, laminates, and eco-paints.', icon: 'PaintRoller' },
-      { title: 'Commercial & Office Fit-Outs', desc: 'Corporate interiors optimized for acoustic comfort, brand identity, and employee productivity.', icon: 'LayoutGrid' }
+      { title: 'Space Planning & Layouts', desc: 'Functional 2D layouts balancing light, movement, and everyday usability for every room.', icon: 'LayoutGrid' },
+      { title: '3D Visualisation & Walkthroughs', desc: 'Realistic renders and walkthroughs so key design decisions are visualized before execution begins.', icon: 'Lightbulb' },
+      { title: 'Modular Kitchens & Wardrobes', desc: 'Custom-engineered kitchens, wardrobes, and storage designed around how the space is actually used.', icon: 'Ruler' },
+      { title: 'False Ceiling & Lighting Design', desc: 'Ambient, task, and accent lighting layouts planned alongside ceiling design and electrical points.', icon: 'Lightbulb' },
+      { title: 'Custom Furniture & Carpentry', desc: 'Purpose-built furniture, TV units, and cabinetry designed to fit the space and the brief.', icon: 'Sofa' },
+      { title: 'Turnkey Project Execution', desc: 'Civil, carpentry, electrical, plumbing, and finishing work coordinated under one project team.', icon: 'HardHat' },
+      { title: 'Material & Finish Selection', desc: 'Guided moodboards and material selection across laminates, veneers, stone, and paint finishes.', icon: 'PaintRoller' },
+      { title: 'Commercial & Office Fit-Outs', desc: 'Offices, retail stores, and hospitality interiors planned around workflow, brand, and comfort.', icon: 'LayoutGrid' },
+      { title: 'Renovation & Remodeling', desc: 'Structured renovation of kitchens, bathrooms, and full homes with minimal disruption to daily life.', icon: 'Wrench' },
+      { title: 'Project Management & Supervision', desc: 'Site supervision and quality checks through every stage, from planning to final handover.', icon: 'ClipboardCheck' }
     ],
     features: [
-      'Fixed-timeline completion guarantee with daily photo updates',
-      '10-year warranty on modular woodworks',
-      'Transparent itemised BOQ (Bill of Quantities)',
-      'In-house team of architects and project managers'
+      'One point of contact for design and execution',
+      'Design visualized before construction begins',
+      'Clearly communicated project scope and deliverables',
+      'Site supervision and quality monitoring through execution',
+      'Support from initial consultation through final handover'
     ]
   },
   {
@@ -84,28 +91,39 @@ export const SUBSIDIARIES = [
     logo: '/logos/tribond.jpg',
     color: '#0B3A8C',
     heroBadge: 'Construction Chemicals & Adhesives',
-    description: 'Tribond formulates engineered polymer-modified mortars, epoxies, and tile adhesives engineered to withstand thermal expansion, structural vibrations, and moisture in heavy-duty commercial and residential installations.',
+    description: "TRIBOND is a forward-thinking adhesive solutions brand dedicated to delivering high-performance bonding products across industries. Built on innovation, durability, and reliability, TRIBOND stands as a symbol of strength where every bond reflects precision engineering and trust. From construction sites to industrial applications and household usage, TRIBOND adhesives are crafted to hold strong under pressure, ensuring long-lasting results in every application.",
     iconName: 'Package',
-    products: [
-      { title: 'Tribond UltraFix T1', category: 'Wall & Floor Tile Adhesive', specs: 'Open Time: 20 min | Coverage: 50-60 sq ft/20kg', badge: 'Type 1 Standard', desc: 'Polymer-modified cementitious tile adhesive for interior ceramic and small ceramic floor tiles.' },
-      { title: 'Tribond ProGrip T2', category: 'Vitrified & Large Format Adhesive', specs: 'Open Time: 30 min | Coverage: 45-55 sq ft/20kg', badge: 'Type 2 High Bond', desc: 'High-strength adhesive designed for vitrified tiles, granite, and exterior wall cladding.' },
-      { title: 'Tribond FlexMax T3', category: 'Tile-on-Tile & Marble Adhesive', specs: 'Open Time: 35 min | Coverage: 40-50 sq ft/20kg', badge: 'Type 3 Flexible', desc: 'Deformable polymer adhesive formulated for tile-on-tile applications, glass mosaics, and natural stone.' },
-      { title: 'Tribond EpoxyGrout 300', category: 'Stainproof Epoxy Grout', specs: 'Pot Life: 45 min | Chemical Resistant', badge: '100% Solid Epoxy', desc: 'Waterproof, chemical-resistant 3-part epoxy grout for swimming pools, kitchens, and hospitals.' },
-      { title: 'Tribond HydroShield WP', category: 'Waterproofing Compound', specs: 'Elongation: >200% | UV Resistant', badge: 'Elastomeric Liquid', desc: 'High-build acrylic waterproofing membrane for terraces, sunken slabs, and wet areas.' },
-      { title: 'Tribond WallPutty Smooth', category: 'White Cement Wall Putty', specs: 'Coverage: 18-22 sq ft/kg (2 coats)', badge: 'White Cement Base', desc: 'Water-resistant base coat delivering ultra-smooth finish prior to interior and exterior painting.' }
+    mission: 'The mission of TRIBOND is to deliver high-quality adhesive products with unmatched strength and durability, continuously innovate to meet evolving industrial and consumer needs, and ensure customer satisfaction through performance and reliability.',
+    vision: 'To become a globally trusted adhesive brand known for innovation, strength, and reliability, empowering industries and households with superior bonding solutions.',
+    values: [
+      { title: 'Strength', desc: 'We design products that perform under extreme conditions and deliver lasting results.' },
+      { title: 'Trust', desc: 'We believe in building relationships that last as long as our bonds.' },
+      { title: 'Innovation', desc: 'Constant research and development drive us to stay ahead in adhesive technology.' },
+      { title: 'Customer Focus', desc: 'Our customers are at the center of everything we create.' },
+      { title: 'Quality', desc: 'Every product undergoes strict quality checks to ensure consistency and reliability.' }
     ],
-    services: [
-      { title: 'Wall & Floor Tile Adhesives', desc: 'Zero-sag formulas engineered for high vertical slip resistance.', icon: 'Layers' },
-      { title: 'Large Format Vitrified Adhesives', desc: 'Flexibility to absorb substrate thermal stress without tile debonding.', icon: 'Package' },
-      { title: 'Epoxy & Cementitious Grouts', desc: 'Anti-bacterial, non-shrink joint fillers in over 24 color shades.', icon: 'Droplets' },
-      { title: 'Waterproofing & Mortars', desc: 'Monolithic liquid-applied membranes and dry-mix block mortars.', icon: 'Beaker' }
+    industries: [
+      'Construction & Infrastructure',
+      'Manufacturing & Engineering',
+      'Furniture & Woodworking',
+      'Electrical & Electronics',
+      'Automotive',
+      'Household & DIY'
     ],
     features: [
-      'ISO 9001:2015 certified manufacturing plant',
-      'Exceeds IS 15477:2019 Type 1, 2 & 3 national standards',
-      'Zero-VOC eco-friendly formulations',
-      'Dedicated technical field lab support'
-    ]
+      'Superior bonding strength',
+      'Long-lasting performance',
+      'Easy application',
+      'Versatile usage across surfaces',
+      'Reliable under extreme conditions',
+      'Backed by innovation and quality assurance'
+    ],
+    contact: {
+      address: 'Ground Floor, Opp. GSPC Gas Office, 150 Feet Ring Rd, Rajkot, Gujarat 360005',
+      phone: '+91 91062 55483',
+      email: 'support@trinetratechnoworld.com',
+      website: 'www.trinetratechnoworld.com/tribond'
+    }
   }
 ];
 

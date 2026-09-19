@@ -1,66 +1,92 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { CompanyPage } from '../components/company/CompanyPage';
-import { ProductCards } from '../components/company/ProductCards';
-import { ProcessSteps } from '../components/company/ProcessSteps';
-import { CoverageCalculator } from '../components/company/CoverageCalculator';
+import { MissionVisionValues } from '../components/company/MissionVisionValues';
+import { PillList } from '../components/company/PillList';
+import { TribondProductSheet } from '../components/company/TribondProductSheet';
 import { SectionHeading } from '../components/ui/SectionHeading';
+import { CardGridSkeleton } from '../components/ui/CardGridSkeleton';
+import { api } from '../lib/api';
 import { SUBSIDIARIES } from '../data/companies';
 
 const TRIBOND_FAQ = [
   {
-    question: 'Which adhesive grade should be used for large format vitrified tiles?',
-    answer: 'For vitrified tiles and slabs exceeding 600x600mm or high-rise exterior cladding, we recommend Tribond ProGrip T2 or FlexMax T3 (IS 15477:2019 Type 2 / Type 3).'
+    question: 'What standards do Tribond adhesives comply with?',
+    answer: 'Tribond tile adhesives are manufactured to meet IS 15477:2019 and EN 12004 standards, with ANSI A118.4 shear bond strength classifications (C1T, C2T, C2TE or C2TES1 depending on the product type).'
   },
   {
-    question: 'Can Tribond adhesives be applied directly over existing old tiles?',
-    answer: 'Yes. Tribond FlexMax T3 is engineered with high-polymer flex modifiers specifically designed for tile-on-tile applications without requiring old tile chipping.'
+    question: 'Which Tribond adhesive is suitable for vitrified tiles and natural stone?',
+    answer: 'TRI T2 is designed for medium to large format ceramic tiles, vitrified tiles, marble, and natural stone on both floors and walls.'
   },
   {
-    question: 'Are Tribond products certified under Indian National Standards?',
-    answer: 'All Tribond formulations are manufactured in our ISO 9001:2015 certified plant and exceed IS 15477:2019 Type 1, Type 2, and Type 3 performance criteria.'
+    question: 'Can Tribond adhesives be used in swimming pools or wet areas?',
+    answer: 'TRI T3 and TRI T4 are suitable for high-performance and high-moisture areas, including swimming pools and other wet zones.'
   },
   {
-    question: 'What is the shelf life and packaging size?',
-    answer: 'Tribond adhesives are packed in heavy-duty 20kg moisture-resistant bags with a guaranteed 12-month shelf life when stored in dry conditions.'
+    question: 'How much coverage does a 20 kg bag provide?',
+    answer: 'Coverage is approximately 25-30 sq. ft. per 20 kg bag at 3-5 mm thickness, and can vary depending on notch trowel size and site conditions.'
+  },
+  {
+    question: 'How should Tribond adhesive powder be mixed?',
+    answer: 'Always add the powder to water, not water to the powder, and avoid exceeding the recommended water quantity for the correct consistency.'
   }
 ];
 
 export const Tribond = () => {
   const company = SUBSIDIARIES.find((s) => s.id === 'tribond');
+  const [products, setProducts] = useState([]);
+  const [productsLoading, setProductsLoading] = useState(true);
+
+  useEffect(() => {
+    api
+      .get('/api/tribond-products')
+      .then(setProducts)
+      .catch(() => setProducts([]))
+      .finally(() => setProductsLoading(false));
+  }, []);
 
   if (!company) return null;
 
   const customWidget = (
     <div className="space-y-20">
-      {/* 1. Product Cards */}
+      {/* 1. Mission, Vision & Core Values */}
       <div>
         <SectionHeading
-          badge="Product Catalog"
-          title="Engineered Construction Chemicals"
-          subtitle="Polymer-modified mortars, tile adhesives, epoxy grouts, and waterproofing membranes."
+          badge="About Tribond"
+          title="Mission, Vision & Core Values"
+          subtitle="Strong Bond. Stronger Trust."
         />
-        <ProductCards products={company.products || []} />
+        <div className="mt-12">
+          <MissionVisionValues mission={company.mission} vision={company.vision} values={company.values} />
+        </div>
       </div>
 
-      {/* 2. Application Process Steps */}
+      {/* 2. Industries We Serve */}
       <div>
         <SectionHeading
-          badge="Application Standard"
-          title="5-Step Standardized Installation Protocol"
-          subtitle="Following correct surface prep and notch troweling ensures 100% debonding resistance."
+          badge="Where We're Used"
+          title="Industries We Serve"
+          subtitle="Bonding solutions trusted across a wide range of applications."
         />
-        <ProcessSteps />
+        <div className="mt-10">
+          <PillList items={company.industries} />
+        </div>
       </div>
 
-      {/* 3. Coverage Calculator */}
+      {/* 3. Product Data Sheets */}
       <div>
         <SectionHeading
-          badge="Interactive Tool"
-          title="Project Bag Estimator"
-          subtitle="Accurately calculate 20kg bag requirement for your floor or wall area."
+          badge="Product Range"
+          title="Tribond Tile Adhesives"
+          subtitle="Technical data sheets for our certified adhesive formulations."
         />
-        <CoverageCalculator />
+        <div className="mt-12">
+          {productsLoading ? (
+            <CardGridSkeleton count={4} columns="" aspect="aspect-[16/6]" />
+          ) : (
+            <TribondProductSheet products={products} />
+          )}
+        </div>
       </div>
     </div>
   );
@@ -68,10 +94,10 @@ export const Tribond = () => {
   return (
     <>
       <Helmet>
-        <title>Tribond by Trinetra — Bonded to Last (Tile Adhesives & Chemicals)</title>
+        <title>Tribond by Trinetra — Strong Bond. Stronger Trust.</title>
         <meta
           name="description"
-          content="Tribond manufactures construction-grade tile adhesives, epoxy grouts, waterproofing compounds, and wall putty certified to IS 15477 standards."
+          content="Tribond manufactures high-performance tile adhesives certified to IS 15477:2019 and EN 12004 standards, for construction, industrial, and household bonding needs."
         />
       </Helmet>
 

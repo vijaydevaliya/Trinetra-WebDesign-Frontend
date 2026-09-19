@@ -20,7 +20,7 @@ export const CompanyHero = ({ company }) => {
             className="relative flex items-center justify-center py-2"
           >
             <div className="absolute w-48 h-48 bg-brand-400/20 blur-3xl rounded-full pointer-events-none" />
-            <LogoPlate logo={company.id} size="xl" className="relative z-10 filter drop-shadow-none dark:drop-shadow-[0_0_24px_rgba(79,192,232,0.7)]" />
+            <LogoPlate logo={company.id} size="xl" className="relative z-10" />
           </motion.div>
 
           <div className="space-y-3 max-w-3xl">

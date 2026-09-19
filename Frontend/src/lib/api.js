@@ -5,10 +5,12 @@ export const getToken = () => localStorage.getItem(TOKEN_KEY);
 export const setToken = (token) => localStorage.setItem(TOKEN_KEY, token);
 export const clearToken = () => localStorage.removeItem(TOKEN_KEY);
 
-// Backend returns image paths like "/uploads/products/foo.webp" — resolve
-// them against the API base so <img> works whether or not a dev proxy is set.
+// Images now come back as full Cloudinary URLs (https://res.cloudinary.com/...)
+// and are used as-is. Old local paths like "/uploads/products/foo.webp" are
+// still resolved against the API base for backward compatibility.
 export const resolveImageUrl = (imagePath) => {
   if (!imagePath) return '';
+  if (/^https?:\/\//.test(imagePath)) return imagePath;
   return `${API_BASE}${imagePath}`;
 };
 

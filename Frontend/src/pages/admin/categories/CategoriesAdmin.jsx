@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Plus, Pencil, Trash2, Check, X } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Plus, Pencil, Trash2, Check, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { api } from '../../../lib/api';
-import { useCategories } from '../../../hooks/useCategories';
+import { Skeleton } from '../../../components/ui/Skeleton';
 
 const TABS = [
   { type: 'product', label: 'Products' },
@@ -9,14 +9,36 @@ const TABS = [
   { type: 'blog', label: 'Blogs' },
 ];
 
+const PAGE_SIZE = 10;
+
 export const CategoriesAdmin = () => {
   const [activeType, setActiveType] = useState('product');
-  const { categories, loading, refetch } = useCategories(activeType);
+  const [categories, setCategories] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
 
   const [newName, setNewName] = useState('');
   const [error, setError] = useState('');
   const [editingId, setEditingId] = useState(null);
   const [editingName, setEditingName] = useState('');
+
+  const load = (type, targetPage) => {
+    setLoading(true);
+    api
+      .get(`/api/categories?type=${type}&page=${targetPage}&limit=${PAGE_SIZE}`)
+      .then((res) => {
+        setCategories(res.items);
+        setTotal(res.total);
+        setTotalPages(res.totalPages);
+      })
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    load(activeType, page);
+  }, [activeType, page]);
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -25,7 +47,7 @@ export const CategoriesAdmin = () => {
     try {
       await api.post('/api/categories', { name: newName.trim(), type: activeType });
       setNewName('');
-      refetch();
+      load(activeType, page);
     } catch (err) {
       setError(err.message || 'Failed to add category');
     }
@@ -48,7 +70,7 @@ export const CategoriesAdmin = () => {
     try {
       await api.put(`/api/categories/${id}`, { name: editingName.trim() });
       cancelEdit();
-      refetch();
+      load(activeType, page);
     } catch (err) {
       setError(err.message || 'Failed to rename category');
     }
@@ -59,7 +81,11 @@ export const CategoriesAdmin = () => {
     setError('');
     try {
       await api.del(`/api/categories/${cat._id}`);
-      refetch();
+      if (categories.length === 1 && page > 1) {
+        setPage((p) => p - 1);
+      } else {
+        load(activeType, page);
+      }
     } catch (err) {
       setError(err.message || 'Failed to delete category');
     }
@@ -80,6 +106,7 @@ export const CategoriesAdmin = () => {
             key={tab.type}
             onClick={() => {
               setActiveType(tab.type);
+              setPage(1);
               cancelEdit();
               setError('');
             }}
@@ -114,7 +141,17 @@ export const CategoriesAdmin = () => {
 
       <div className="rounded-2xl bg-white dark:bg-navy-900 border border-brand-500/10 shadow-lg divide-y divide-brand-500/10">
         {loading ? (
-          <p className="p-6 text-sm text-navy-600 dark:text-brand-200/70">Loading…</p>
+          <div className="p-4 space-y-3">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="flex items-center justify-between px-2 py-1">
+                <Skeleton className="h-4 w-40" />
+                <div className="flex items-center gap-1.5">
+                  <Skeleton className="w-8 h-8 rounded-lg" />
+                  <Skeleton className="w-8 h-8 rounded-lg" />
+                </div>
+              </div>
+            ))}
+          </div>
         ) : categories.length === 0 ? (
           <p className="p-6 text-sm text-navy-600 dark:text-brand-200/70">No categories yet — add one above.</p>
         ) : (
@@ -154,6 +191,33 @@ export const CategoriesAdmin = () => {
               </div>
             </div>
           ))
+        )}
+
+        {total > 0 && (
+          <div className="flex items-center justify-between px-4 py-3">
+            <p className="text-xs text-navy-600 dark:text-brand-200/70">
+              Page <span className="font-semibold text-navy-950 dark:text-white">{page}</span> of{' '}
+              <span className="font-semibold text-navy-950 dark:text-white">{totalPages}</span>
+            </p>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={page === 1}
+                className="p-2 rounded-lg text-navy-700 dark:text-brand-100 hover:bg-brand-500/10 disabled:opacity-40 disabled:hover:bg-transparent"
+                aria-label="Previous page"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                disabled={page === totalPages}
+                className="p-2 rounded-lg text-navy-700 dark:text-brand-100 hover:bg-brand-500/10 disabled:opacity-40 disabled:hover:bg-transparent"
+                aria-label="Next page"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
         )}
       </div>
     </div>

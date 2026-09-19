@@ -4,6 +4,7 @@ import { ArrowLeft } from 'lucide-react';
 import { api } from '../../../lib/api';
 import { useCategories } from '../../../hooks/useCategories';
 import { ImageUploader } from '../../../components/admin/ImageUploader';
+import { AdminFormSkeleton } from '../../../components/admin/AdminFormSkeleton';
 
 export const ProjectForm = () => {
   const { id } = useParams();
@@ -13,6 +14,7 @@ export const ProjectForm = () => {
 
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
+  const [description, setDescription] = useState('');
   const [existingImages, setExistingImages] = useState([]);
   const [newFiles, setNewFiles] = useState([]);
   const [loading, setLoading] = useState(isEdit);
@@ -24,6 +26,7 @@ export const ProjectForm = () => {
     api.get(`/api/projects/${id}`).then((p) => {
       setTitle(p.title);
       setCategory(p.category);
+      setDescription(p.description || '');
       setExistingImages(p.images || []);
       setLoading(false);
     });
@@ -44,6 +47,7 @@ export const ProjectForm = () => {
       const formData = new FormData();
       formData.append('title', title);
       formData.append('category', category);
+      formData.append('description', description);
       formData.append('keepImages', JSON.stringify(existingImages));
       newFiles.forEach((file) => formData.append('images', file));
 
@@ -61,7 +65,7 @@ export const ProjectForm = () => {
   };
 
   if (loading) {
-    return <p className="text-sm text-navy-600 dark:text-brand-200/70">Loading…</p>;
+    return <AdminFormSkeleton fields={3} />;
   }
 
   return (
@@ -110,6 +114,17 @@ export const ProjectForm = () => {
               ))}
             </select>
           )}
+        </div>
+
+        <div>
+          <label className="block text-xs font-semibold text-navy-700 dark:text-brand-100 mb-1.5">Description</label>
+          <textarea
+            rows={3}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="A short 2-3 line summary of this project. You can add multiple paragraphs by pressing Enter."
+            className="w-full px-4 py-2.5 rounded-xl border border-brand-500/20 bg-brand-50 dark:bg-navy-800 text-navy-950 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+          />
         </div>
 
         <div>

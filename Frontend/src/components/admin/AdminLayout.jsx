@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, FolderKanban, Newspaper, Tags, LogOut, Globe } from 'lucide-react';
+import { LayoutDashboard, Package, FolderKanban, Newspaper, Tags, LogOut, Globe, Layers, Settings } from 'lucide-react';
 import { LogoPlate } from '../ui/LogoPlate';
 import { ThemeToggle } from '../ui/ThemeToggle';
 import { useAuth } from '../../context/AuthContext';
@@ -11,6 +11,8 @@ const NAV_ITEMS = [
   { to: '/admin/projects', label: 'Projects', icon: FolderKanban },
   { to: '/admin/blogs', label: 'Blogs', icon: Newspaper },
   { to: '/admin/categories', label: 'Categories', icon: Tags },
+  { to: '/admin/tribond-products', label: 'Tribond Products', icon: Layers },
+  { to: '/admin/settings', label: 'Site Settings', icon: Settings },
 ];
 
 export const AdminLayout = ({ children }) => {
@@ -32,7 +34,7 @@ export const AdminLayout = ({ children }) => {
   return (
     <div className="min-h-screen bg-brand-50 dark:bg-navy-950 flex flex-col md:flex-row">
       {/* Sidebar (desktop) */}
-      <aside className="hidden md:flex md:flex-col md:w-64 md:shrink-0 border-r border-brand-500/10 bg-white dark:bg-navy-900 p-5">
+      <aside className="hidden md:flex md:flex-col md:w-64 md:shrink-0 md:sticky md:top-0 md:h-screen md:overflow-y-auto border-r border-brand-500/10 bg-white dark:bg-navy-900 p-5">
         <Link to="/admin" className="flex items-center gap-3 mb-8">
           <LogoPlate logo="trinetra" size="md" />
           <span className="font-bold text-navy-950 dark:text-white">Admin</span>

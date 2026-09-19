@@ -6,7 +6,7 @@ import { AdminTableSkeleton } from '../../../components/admin/AdminTableSkeleton
 
 const PAGE_SIZE = 10;
 
-export const ProductsAdmin = () => {
+export const TribondProductsAdmin = () => {
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
@@ -17,7 +17,7 @@ export const ProductsAdmin = () => {
   const load = (targetPage) => {
     setLoading(true);
     api
-      .get(`/api/products?page=${targetPage}&limit=${PAGE_SIZE}`)
+      .get(`/api/tribond-products?page=${targetPage}&limit=${PAGE_SIZE}`)
       .then((res) => {
         setProducts(res.items);
         setTotal(res.total);
@@ -31,10 +31,10 @@ export const ProductsAdmin = () => {
   }, [page]);
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Delete this product? This cannot be undone.')) return;
+    if (!window.confirm('Delete this Tribond product? This cannot be undone.')) return;
     setDeletingId(id);
     try {
-      await api.del(`/api/products/${id}`);
+      await api.del(`/api/tribond-products/${id}`);
       if (products.length === 1 && page > 1) {
         setPage((p) => p - 1);
       } else {
@@ -49,11 +49,11 @@ export const ProductsAdmin = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-navy-950 dark:text-white">Products</h1>
+          <h1 className="text-2xl font-bold text-navy-950 dark:text-white">Tribond Products</h1>
           <p className="text-sm text-navy-600 dark:text-brand-200/70 mt-1">{total} total</p>
         </div>
         <Link
-          to="/admin/products/new"
+          to="/admin/tribond-products/new"
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white text-sm font-semibold transition-colors"
         >
           <Plus className="w-4 h-4" />
@@ -66,9 +66,9 @@ export const ProductsAdmin = () => {
             <thead className="bg-brand-50 dark:bg-navy-800 text-navy-700 dark:text-brand-100">
               <tr>
                 <th className="text-left px-4 py-3 font-semibold">Image</th>
-                <th className="text-left px-4 py-3 font-semibold">Title</th>
-                <th className="text-left px-4 py-3 font-semibold">Category</th>
-                <th className="text-left px-4 py-3 font-semibold">Images</th>
+                <th className="text-left px-4 py-3 font-semibold">Name</th>
+                <th className="text-left px-4 py-3 font-semibold">Type</th>
+                <th className="text-left px-4 py-3 font-semibold">Coverage</th>
                 <th className="text-right px-4 py-3 font-semibold">Actions</th>
               </tr>
             </thead>
@@ -85,13 +85,13 @@ export const ProductsAdmin = () => {
                       )}
                     </div>
                   </td>
-                  <td className="px-4 py-3 font-semibold text-navy-950 dark:text-white">{product.title}</td>
-                  <td className="px-4 py-3 text-navy-600 dark:text-brand-200/80">{product.category}</td>
-                  <td className="px-4 py-3 text-navy-600 dark:text-brand-200/80">{product.images.length}</td>
+                  <td className="px-4 py-3 font-semibold text-navy-950 dark:text-white">{product.name}</td>
+                  <td className="px-4 py-3 text-navy-600 dark:text-brand-200/80">{product.type}</td>
+                  <td className="px-4 py-3 text-navy-600 dark:text-brand-200/80">{product.coverage}</td>
                   <td className="px-4 py-3 text-right">
                     <div className="flex items-center justify-end gap-2">
                       <Link
-                        to={`/admin/products/${product._id}`}
+                        to={`/admin/tribond-products/${product._id}`}
                         className="p-2 rounded-lg text-brand-600 dark:text-brand-300 hover:bg-brand-500/10"
                         aria-label="Edit"
                       >
@@ -113,7 +113,7 @@ export const ProductsAdmin = () => {
             )}
           </table>
           {!loading && products.length === 0 && (
-            <p className="p-6 text-center text-sm text-navy-600 dark:text-brand-200/70">No products yet.</p>
+            <p className="p-6 text-center text-sm text-navy-600 dark:text-brand-200/70">No Tribond products yet.</p>
           )}
 
           {!loading && total > 0 && (

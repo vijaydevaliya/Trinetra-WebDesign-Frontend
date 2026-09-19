@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { CTABand } from '../components/sections/CTABand';
+import { Skeleton } from '../components/ui/Skeleton';
 import { api, resolveImageUrl } from '../lib/api';
 
 export const BlogDetail = () => {
@@ -27,8 +28,18 @@ export const BlogDetail = () => {
 
   if (loading || !blog) {
     return (
-      <div className="pt-32 pb-20 bg-brand-50 dark:bg-navy-950 min-h-screen flex justify-center">
-        <div className="w-8 h-8 rounded-full border-2 border-brand-500 border-t-transparent animate-spin" />
+      <div className="pt-32 pb-20 bg-brand-50 dark:bg-navy-950 min-h-screen">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+          <Skeleton className="h-4 w-28" />
+          <Skeleton className="h-3 w-20" />
+          <Skeleton className="h-9 w-full" />
+          <Skeleton className="aspect-[16/9] w-full rounded-2xl mt-8" />
+          <div className="space-y-3 pt-4">
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-3/4" />
+          </div>
+        </div>
       </div>
     );
   }

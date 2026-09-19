@@ -13,8 +13,7 @@ export const ProductCards = ({ products = [] }) => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.5, delay: idx * 0.1 }}
-          whileHover={{ y: -6 }}
-          className="rounded-3xl glass-card-light dark:glass-card-dark p-6 border border-brand-500/20 shadow-xl flex flex-col justify-between group hover:border-brand-400/50 transition-all duration-300"
+          className="rounded-3xl glass-card-light dark:glass-card-dark p-6 border border-brand-500/20 shadow-xl flex flex-col justify-between group hover:bg-brand-500/5 dark:hover:bg-brand-500/10 hover:border-brand-400/50 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-brand-500/25 transition-all duration-300"
         >
           <div className="space-y-4">
             <div className="flex items-center justify-between">

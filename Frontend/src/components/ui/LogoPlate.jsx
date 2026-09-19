@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useSiteSettings } from '../../context/SiteSettingsContext';
+import { resolveImageUrl } from '../../lib/api';
 
 const LOGO_MAP = {
   trinetra: {
@@ -46,13 +48,17 @@ const IMG_HEIGHTS = {
 
 export const LogoPlate = ({ logo = 'trinetra', size = 'md', className = '', onClick, forceGlow = false }) => {
   const [imgError, setImgError] = useState(false);
+  const { logo: adminLogo } = useSiteSettings();
   const logoInfo = LOGO_MAP[logo] || LOGO_MAP.trinetra;
+  // The main brand mark (header/footer/mobile nav) can be replaced from the
+  // admin panel; subsidiary logos stay fixed to their own artwork.
+  const src = logo === 'trinetra' && adminLogo ? resolveImageUrl(adminLogo) : logoInfo.src;
 
   const sizeClass = SIZE_CLASSES[size] || SIZE_CLASSES.md;
   const imgHeight = IMG_HEIGHTS[size] || IMG_HEIGHTS.md;
   const glowClasses = forceGlow
     ? 'drop-shadow-[0_0_16px_rgba(79,192,232,0.65)] brightness-110'
-    : 'dark:drop-shadow-[0_0_16px_rgba(79,192,232,0.65)] dark:brightness-110';
+    : 'drop-shadow-[0_4px_10px_rgba(15,23,42,0.12)] dark:drop-shadow-[0_4px_12px_rgba(79,192,232,0.3)]';
 
   return (
     <div
@@ -61,7 +67,7 @@ export const LogoPlate = ({ logo = 'trinetra', size = 'md', className = '', onCl
     >
       {!imgError ? (
         <img
-          src={logoInfo.src}
+          src={src}
           alt={logoInfo.alt}
           onError={() => setImgError(true)}
           className={`object-contain ${imgHeight} w-auto transition-all duration-300 group-hover:scale-105 filter ${glowClasses}`}

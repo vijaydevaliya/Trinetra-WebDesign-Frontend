@@ -64,6 +64,7 @@ export const CompanyPage = ({ company, customWidget, faqItems = [] }) => {
       </section>
 
       {/* 3. Services Grid */}
+      {company.services?.length > 0 && (
       <section id="services" className="py-20 bg-brand-100/20 dark:bg-navy-900/40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
@@ -73,15 +74,14 @@ export const CompanyPage = ({ company, customWidget, faqItems = [] }) => {
           />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
-            {(company.services || []).map((serv, idx) => (
+            {company.services.map((serv, idx) => (
               <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-50px' }}
                 transition={{ duration: 0.5, delay: idx * 0.08 }}
-                whileHover={{ y: -6 }}
-                className="p-6 rounded-2xl glass-card-light dark:glass-card-dark border border-brand-500/20 shadow-lg group hover:border-brand-400/50 transition-all duration-300 flex flex-col justify-between"
+                className="p-6 rounded-2xl glass-card-light dark:glass-card-dark border border-brand-500/20 shadow-lg group hover:bg-brand-500/5 dark:hover:bg-brand-500/10 hover:border-brand-400/50 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-brand-500/20 transition-all duration-300 flex flex-col justify-between"
               >
                 <div className="space-y-3">
                   <div className="w-10 h-10 rounded-xl bg-brand-500/10 text-brand-500 flex items-center justify-center font-bold text-sm">
@@ -99,6 +99,7 @@ export const CompanyPage = ({ company, customWidget, faqItems = [] }) => {
           </div>
         </div>
       </section>
+      )}
 
       {/* 4. Custom Interactive Showcase Widget */}
       {customWidget && (

@@ -1,8 +1,9 @@
 import React from 'react';
 
 export const Marquee = ({ items = [], speed = '25s' }) => {
-  // Duplicate array to ensure seamless infinite looping
-  const doubledItems = [...items, ...items, ...items];
+  // Exactly two copies, paired with the -50% translateX in the marquee
+  // keyframes (tailwind.config.js) — that's what makes the loop seamless.
+  const doubledItems = [...items, ...items];
 
   return (
     <div className="relative w-full overflow-hidden py-4 select-none group">

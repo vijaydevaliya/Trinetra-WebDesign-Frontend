@@ -36,9 +36,8 @@ export const Footer = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  whileHover={{ scale: 1.15, y: -2 }}
                   whileTap={{ scale: 0.9 }}
-                  className="p-2.5 rounded-xl bg-brand-100/60 dark:bg-navy-900 border border-brand-500/20 text-brand-600 dark:text-brand-300 hover:text-navy-950 dark:hover:text-white hover:bg-brand-500/20 transition-all duration-300"
+                  className="p-2.5 rounded-xl bg-brand-100/60 dark:bg-navy-900 border border-brand-500/20 text-brand-600 dark:text-brand-300 hover:text-navy-950 dark:hover:text-white hover:bg-brand-500/20 hover:scale-[1.15] hover:-translate-y-0.5 transition-all duration-300"
                 >
                   <social.icon className="w-4 h-4" />
                 </motion.a>

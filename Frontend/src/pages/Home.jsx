@@ -5,7 +5,6 @@ import { WhoWeAre } from '../components/sections/WhoWeAre';
 import { StatsCounter } from '../components/sections/StatsCounter';
 import { CompaniesGrid } from '../components/sections/CompaniesGrid';
 import { Marquee } from '../components/ui/Marquee';
-import { Timeline } from '../components/sections/Timeline';
 import { Testimonials } from '../components/sections/Testimonials';
 import { CTABand } from '../components/sections/CTABand';
 
@@ -51,9 +50,6 @@ export const Home = () => {
       <div className="py-8 bg-brand-50 dark:bg-navy-950 border-y border-brand-500/20">
         <Marquee items={CAPABILITIES} />
       </div>
-
-      {/* 6. Timeline */}
-      <Timeline />
 
       {/* 7. Testimonials */}
       <Testimonials />

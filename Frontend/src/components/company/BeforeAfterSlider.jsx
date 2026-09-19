@@ -53,7 +53,7 @@ export const BeforeAfterSlider = () => {
         className="relative w-full h-[360px] md:h-[480px] rounded-3xl overflow-hidden shadow-2xl border border-brand-500/30 select-none cursor-ew-resize"
       >
         {/* AFTER Image Layer (Base Background) */}
-        <div className="absolute inset-0 bg-navy-900 flex flex-col justify-end p-8">
+        <div className="absolute inset-0 bg-navy-900">
           <div className="absolute inset-0 bg-gradient-to-br from-brand-900 via-navy-900 to-navy-950" />
           {/* Decorative luxury architectural render vector */}
           <div className="absolute inset-0 flex items-center justify-center opacity-25">
@@ -64,18 +64,6 @@ export const BeforeAfterSlider = () => {
               <path d="M 100 350 L 350 150 L 700 350" stroke="#1565C0" strokeWidth="6" />
             </svg>
           </div>
-
-          <div className="relative z-10 space-y-2 text-left">
-            <span className="px-3 py-1 rounded-full text-xs font-bold bg-brand-500 text-white shadow-lg">
-              AFTER (Vishwakarma Luxury Execution)
-            </span>
-            <h3 className="text-xl sm:text-2xl font-bold text-white">
-              Bespoke Modern Living Room & Lighting
-            </h3>
-            <p className="text-xs text-brand-200/80 max-w-md">
-              Custom marine-ply wood paneling, ambient LED cove ceiling, and Italian marble flooring.
-            </p>
-          </div>
         </div>
 
         {/* BEFORE Image Layer (Clipped Overlay) */}
@@ -84,7 +72,7 @@ export const BeforeAfterSlider = () => {
           style={{ width: `${sliderPos}%` }}
         >
           <div
-            className="absolute top-0 bottom-0 left-0 w-[800px] md:w-[1200px] h-full flex flex-col justify-end p-8 bg-slate-900"
+            className="absolute top-0 bottom-0 left-0 h-full bg-slate-900"
             style={{ width: containerRef.current ? containerRef.current.clientWidth : '100%' }}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950" />
@@ -97,19 +85,34 @@ export const BeforeAfterSlider = () => {
                 <rect width="100%" height="100%" fill="url(#blueprint)" />
               </svg>
             </div>
-
-            <div className="relative z-10 space-y-2 text-left">
-              <span className="px-3 py-1 rounded-full text-xs font-bold bg-slate-700 text-slate-200">
-                BEFORE (Raw Site Shell)
-              </span>
-              <h3 className="text-xl sm:text-2xl font-bold text-slate-300">
-                Unfinished Concrete Structure
-              </h3>
-              <p className="text-xs text-slate-400 max-w-md">
-                Raw brickwork, un-routed wiring, and bare concrete floor layout before spatial planning.
-              </p>
-            </div>
           </div>
+        </div>
+
+        {/* Fixed labels — pinned to the outer container so both stay fully
+            visible no matter where the slider is dragged, instead of living
+            inside the clipped reveal layers. */}
+        <div className="absolute left-0 bottom-0 z-10 p-8 pointer-events-none space-y-2 text-left">
+          <span className="px-3 py-1 rounded-full text-xs font-bold bg-slate-700 text-slate-200">
+            BEFORE (Raw Site Shell)
+          </span>
+          <h3 className="text-xl sm:text-2xl font-bold text-slate-300">
+            Unfinished Concrete Structure
+          </h3>
+          <p className="text-xs text-slate-400 max-w-md">
+            Raw brickwork, un-routed wiring, and bare concrete floor layout before spatial planning.
+          </p>
+        </div>
+
+        <div className="absolute right-0 bottom-0 z-10 p-8 pointer-events-none space-y-2 text-right">
+          <span className="px-3 py-1 rounded-full text-xs font-bold bg-brand-500 text-white shadow-lg">
+            AFTER (Vishwakarma Luxury Execution)
+          </span>
+          <h3 className="text-xl sm:text-2xl font-bold text-white">
+            Bespoke Modern Living Room & Lighting
+          </h3>
+          <p className="text-xs text-brand-200/80 max-w-md ml-auto">
+            Custom marine-ply wood paneling, ambient LED cove ceiling, and Italian marble flooring.
+          </p>
         </div>
 
         {/* Draggable Divider Handle Line */}

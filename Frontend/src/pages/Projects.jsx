@@ -1,7 +1,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SectionHeading } from '../components/ui/SectionHeading';
+import { CardGridSkeleton } from '../components/ui/CardGridSkeleton';
 import { CTABand } from '../components/sections/CTABand';
 import { api, resolveImageUrl } from '../lib/api';
 import { useCategories } from '../hooks/useCategories';
@@ -76,11 +78,9 @@ export const Projects = () => {
             })}
           </div>
 
-          {/* Masonry Gallery */}
+          {/* Grid Gallery */}
           {loading ? (
-            <div className="flex justify-center py-20">
-              <div className="w-8 h-8 rounded-full border-2 border-brand-500 border-t-transparent animate-spin" />
-            </div>
+            <CardGridSkeleton count={9} columns="sm:grid-cols-2 lg:grid-cols-3" aspect="aspect-[4/3]" />
           ) : (
             <AnimatePresence mode="wait">
               <motion.div
@@ -89,19 +89,20 @@ export const Projects = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -16 }}
                 transition={{ duration: 0.35 }}
-                className="columns-1 sm:columns-2 lg:columns-3 gap-6"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
               >
                 {filteredProjects.map((project) => (
-                  <div
+                  <Link
+                    to={`/projects/${project._id}`}
                     key={project._id}
-                    className="group relative mb-6 break-inside-avoid overflow-hidden rounded-2xl border border-brand-500/15 shadow-lg"
+                    className="group relative block aspect-[4/3] overflow-hidden rounded-2xl border border-brand-500/15 shadow-lg"
                   >
                     {project.images[0] && (
                       <img
                         src={resolveImageUrl(project.images[0])}
                         alt={project.title}
                         loading="lazy"
-                        className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     )}
                     <div className="absolute inset-0 flex items-center justify-center bg-navy-950/0 group-hover:bg-navy-950/60 transition-colors duration-300">
@@ -109,7 +110,7 @@ export const Projects = () => {
                         {project.title}
                       </span>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </motion.div>
             </AnimatePresence>
