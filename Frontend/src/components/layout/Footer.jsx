@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Linkedin, Twitter, Facebook, Instagram, ArrowUpRight } from 'lucide-react';
+import { Mail, Phone, MapPin, Linkedin, Facebook, Instagram, ArrowUpRight } from 'lucide-react';
 import { LogoPlate } from '../ui/LogoPlate';
 import { PARENT_COMPANY, SUBSIDIARIES } from '../../data/companies';
 
@@ -25,10 +25,9 @@ export const Footer = () => {
             {/* Social Links */}
             <div className="flex items-center gap-3 pt-2">
               {[
-                { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
-                { icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
-                { icon: Facebook, href: 'https://facebook.com', label: 'Facebook' },
-                { icon: Instagram, href: 'https://instagram.com', label: 'Instagram' },
+                { icon: Facebook, href: 'https://www.facebook.com/Trinetrahomeautomation', label: 'Facebook' },
+                { icon: Instagram, href: 'https://www.instagram.com/trinetra_home_automation', label: 'Instagram' },
+                { icon: Linkedin, href: 'https://www.linkedin.com/company/trinetra-home-automation', label: 'LinkedIn' },
               ].map((social, i) => (
                 <motion.a
                   key={i}
@@ -97,15 +96,15 @@ export const Footer = () => {
             <ul className="space-y-4 text-sm text-navy-600 dark:text-brand-200/80">
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-brand-400 flex-shrink-0 mt-1" />
-                <span>Trinetra Technoworld HQ, Tech Park Towers, Hinjewadi Phase 1, Pune, Maharashtra 411057</span>
+                <span>Plot no 129, 3rd lane Darukhana, Mazgaon, Mumbai - 400010</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-brand-400 flex-shrink-0" />
-                <a href="tel:+912068009000" className="hover:text-navy-950 dark:hover:text-white transition-colors">+91 (020) 6800-9000</a>
+                <a href="tel:+919106255483" className="hover:text-navy-950 dark:hover:text-white transition-colors">+91 91062 55483</a>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-brand-400 flex-shrink-0" />
-                <a href="mailto:info@trinetratechnoworld.com" className="hover:text-navy-950 dark:hover:text-white transition-colors">info@trinetratechnoworld.com</a>
+                <a href="mailto:support@trinetratechno.world" className="hover:text-navy-950 dark:hover:text-white transition-colors">support@trinetratechno.world</a>
               </li>
             </ul>
           </div>

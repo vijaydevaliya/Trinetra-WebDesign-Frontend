@@ -27,9 +27,9 @@ export const Contact = () => {
           {/* Contact Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { title: 'Corporate Headquarters', desc: 'Trinetra Technoworld HQ, Hinjewadi Phase 1, Pune, MH 411057', phone: '+91 (020) 6800-9000', email: 'info@trinetratechnoworld.com', icon: MapPin },
-              { title: 'Vasuki Support & Sales', desc: 'Dedicated Society Onboarding & Gate App Helpdesk', phone: '+91 (020) 6800-9001', email: 'support@vasuki.trinetra.com', icon: Phone },
-              { title: 'Vishwakarma & Tribond Enquiries', desc: 'Interior Architecture & Construction Chemical Orders', phone: '+91 (020) 6800-9002', email: 'orders@tribond.trinetra.com', icon: Mail },
+              { title: 'Corporate Headquarters', desc: 'Plot no 129, 3rd lane Darukhana, Mazgaon, Mumbai - 400010', phone: '+91 91062 55483', email: 'support@trinetratechno.world', icon: MapPin },
+              { title: 'Vasuki Support & Sales', desc: 'Dedicated Society Onboarding & Gate App Helpdesk', phone: '+91 91062 55483', email: 'support@trinetratechno.world', icon: Phone },
+              { title: 'Vishwakarma & Tribond Enquiries', desc: 'Interior Architecture & Construction Chemical Orders', phone: '+91 91062 55483', email: 'support@trinetratechno.world', icon: Mail },
             ].map((c, idx) => (
               <div
                 key={idx}

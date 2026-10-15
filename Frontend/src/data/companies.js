@@ -121,7 +121,7 @@ export const SUBSIDIARIES = [
     contact: {
       address: 'Ground Floor, Opp. GSPC Gas Office, 150 Feet Ring Rd, Rajkot, Gujarat 360005',
       phone: '+91 91062 55483',
-      email: 'support@trinetratechnoworld.com',
+      email: 'support@trinetratechno.world',
       website: 'www.trinetratechnoworld.com/tribond'
     }
   }

@@ -35,6 +35,7 @@ import { CategoriesAdmin } from './pages/admin/categories/CategoriesAdmin';
 import { TribondProductsAdmin } from './pages/admin/tribond/TribondProductsAdmin';
 import { TribondProductForm } from './pages/admin/tribond/TribondProductForm';
 import { SiteSettingsAdmin } from './pages/admin/settings/SiteSettingsAdmin';
+import { InquiriesAdmin } from './pages/admin/inquiries/InquiriesAdmin';
 
 // Scroll to top helper component on route changes
 const ScrollToTop = () => {
@@ -73,6 +74,7 @@ const AdminApp = () => (
       <Route path="/admin/tribond-products/new" element={withAdminLayout(<TribondProductForm />)} />
       <Route path="/admin/tribond-products/:id" element={withAdminLayout(<TribondProductForm />)} />
       <Route path="/admin/settings" element={withAdminLayout(<SiteSettingsAdmin />)} />
+      <Route path="/admin/inquiries" element={withAdminLayout(<InquiriesAdmin />)} />
       <Route path="*" element={<Navigate to="/admin" replace />} />
     </Routes>
   </AuthProvider>

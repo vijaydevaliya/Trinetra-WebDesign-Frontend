@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, FolderKanban, Newspaper, Tags, LogOut, Globe, Layers, Settings } from 'lucide-react';
+import { LayoutDashboard, Package, FolderKanban, Newspaper, Tags, LogOut, Globe, Layers, Settings, Mail } from 'lucide-react';
 import { LogoPlate } from '../ui/LogoPlate';
 import { ThemeToggle } from '../ui/ThemeToggle';
 import { useAuth } from '../../context/AuthContext';
@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { to: '/admin/products', label: 'Products', icon: Package },
   { to: '/admin/projects', label: 'Projects', icon: FolderKanban },
   { to: '/admin/blogs', label: 'Blogs', icon: Newspaper },
+  { to: '/admin/inquiries', label: 'Inquiries', icon: Mail },
   { to: '/admin/categories', label: 'Categories', icon: Tags },
   { to: '/admin/tribond-products', label: 'Tribond Products', icon: Layers },
   { to: '/admin/settings', label: 'Site Settings', icon: Settings },

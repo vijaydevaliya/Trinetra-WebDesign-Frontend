@@ -2,16 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, CheckCircle, Sparkles } from 'lucide-react';
 import { Button } from '../ui/Button';
-
-// Stubbed inquiry handler with TODO note for real API endpoint integration
-const submitInquiry = async (formData) => {
-  // TODO: Replace stubbed simulation with actual API POST endpoint (e.g. /api/v1/inquiries)
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ success: true });
-    }, 1000);
-  });
-};
+import { api } from '../../lib/api';
 
 export const ContactForm = ({ companyName = 'Trinetra Technoworld Group' }) => {
   const [formData, setFormData] = useState({ name: '', phone: '', email: '', message: '' });
@@ -29,7 +20,7 @@ export const ContactForm = ({ companyName = 'Trinetra Technoworld Group' }) => {
     setLoading(true);
 
     try {
-      await submitInquiry(formData);
+      await api.post('/api/inquiries', { ...formData, companyName });
       setSubmitted(true);
     } catch (err) {
       setError('Failed to submit inquiry. Please try again.');
